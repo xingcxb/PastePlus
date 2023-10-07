@@ -1,0 +1,27 @@
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+    <dict>
+        <key>CFBundlePackageType</key>
+        <string>APPL</string>
+        <key>CFBundleName</key>
+        <string>My Productname</string>
+        <key>CFBundleExecutable</key>
+        <string>PastePlus</string>
+        <key>CFBundleIdentifier</key>
+        <string>com.wails.pasteplus</string>
+        <key>CFBundleVersion</key>
+        <string></string>
+        <key>CFBundleGetInfoString</key>
+        <string>(c) 2023 </string>
+        <key>CFBundleShortVersionString</key>
+        <string></string>
+        <key>CFBundleIconFile</key>
+        <string>icons</string>
+        <key>LSMinimumSystemVersion</key>
+        <string>10.13.0</string>
+        <key>NSHighResolutionCapable</key>
+        <string>true</string>
+        <key>NSHumanReadableCopyright</key>
+        <string></string>
+    </dict>
+</plist>
