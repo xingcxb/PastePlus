@@ -1,6 +1,7 @@
 package main
 
 import (
+	"PastePlus/core/plugin/cron"
 	"embed"
 	_ "embed"
 	"log"
@@ -34,7 +35,10 @@ func main() {
 
 		URL: "/",
 	})
-
+	go func() {
+		// 创建定时任务
+		cron.CreateCron()
+	}()
 	err := app.Run()
 
 	if err != nil {

@@ -1,35 +1,41 @@
-import { createRouter, createWebHashHistory } from "vue-router";
+import {createRouter, createWebHashHistory} from "vue-router";
 
 const routes = [
-  {
-    // 设置页面
-    path: "/settings",
-    name: "Settings",
-    component: () => import("../components/set/setTotal.vue"),
-  },
-  {
-    // 设置通用页面
-    path: "/settings/general",
-    name: "SettingsGeneral",
-    component: () => import("../components/set/setGeneral.vue"),
-  },
-  {
-    // 设置快捷键页面
-    path: "/settings/shortcut",
-    name: "SettingsShortcut",
-    component: () => import("../components/set/setShortcutKey.vue"),
-  },
-  {
-    // 设置更新页面
-    path: "/settings/update",
-    name: "SettingsUpdate",
-    component: () => import("../components/set/setUpdate.vue"),
-  }
+    {
+        // 设置页面
+        path: "/settings",
+        name: "Settings",
+        component: () => import("../components/set/setTotal.vue"),
+    },
+    {
+        // 设置通用页面
+        path: "/settings/general",
+        name: "SettingsGeneral",
+        component: () => import("../components/set/setGeneral.vue"),
+    },
+    {
+        // 设置快捷键页面
+        path: "/settings/shortcut",
+        name: "SettingsShortcut",
+        component: () => import("../components/set/setShortcutKey.vue"),
+    },
+    {
+        // 设置更新页面
+        path: "/settings/update",
+        name: "SettingsUpdate",
+        component: () => import("../components/set/setUpdate.vue"),
+    },
+    {
+        // 主要页面
+        path: "/home",
+        name: "Home",
+        component: () => import("../components/home/home.vue"),
+    }
 ]
 
 const router = createRouter({
-  history: createWebHashHistory(),
-  routes,
+    history: createWebHashHistory(),
+    routes,
 });
 
 export default router;

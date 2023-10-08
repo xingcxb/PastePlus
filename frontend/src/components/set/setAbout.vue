@@ -7,6 +7,10 @@
           :level="3"
       >Paste+
       </a-typography-title>
+      <a-divider />
+      <a-typography-paragraph class="appVersion">
+        Paste+ 是一款跨平台的剪贴板管理工具，支持 Windows、MacOS、Linux。
+      </a-typography-paragraph>
       <p class="appVersion">版本 0.0.1</p>
       <p class="appVersion">开发者：<span onclick="openBrowser('https://xingcxb.com')" class="link">Symbol</span></p>
       <p class="appVersion">Github：<span onclick="openBrowser('https://xingcxb.com')" class="link">Symbol</span></p>
@@ -17,7 +21,7 @@
 
 // 浏览器打开链接
 function openBrowser(site) {
-  runtime.BrowserOpenURL(site);
+  window.runtime.BrowserOpenURL(site);
 }
 
 </script>
@@ -35,5 +39,6 @@ function openBrowser(site) {
 .link{
   color: #5562f9;
   user-select: none;
+  cursor: pointer;
 }
 </style>
