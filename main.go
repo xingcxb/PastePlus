@@ -17,48 +17,33 @@ func main() {
 	app := application.New(application.Options{
 		Name:        basic.AppName,
 		Description: basic.AppDescription,
+		//Icon: func() []byte {
+		//	b, _ := assets.ReadFile("frontend/dist/logoX800.png")
+		//	return b
+		//}(),
 		Assets: application.AssetOptions{
 			FS: assets,
 		},
 		Mac: application.MacOptions{
-			ApplicationShouldTerminateAfterLastWindowClosed: true,
+			// 如果要让macOS的Dock不显示这里必须指定
+			// 目前还未知晓ActivationPolicyAccessory和ActivationPolicyProhibited有什么区别
+			ActivationPolicy: application.ActivationPolicyAccessory,
+			// 允许所有的窗口关闭，但是程序依旧保持运行
+			ApplicationShouldTerminateAfterLastWindowClosed: false,
 		},
 	})
 
-	// 创建主窗口，该窗口需要保持，不能退出，不然程序就退出了
-	app.NewWebviewWindowWithOptions(application.WebviewWindowOptions{
-		Mac: application.MacWindow{
-			DisableShadow:           false,
-			InvisibleTitleBarHeight: 50,
-			Backdrop:                application.MacBackdropTranslucent,
-			TitleBar: application.MacTitleBar{
-				AppearsTransparent:   true,
-				Hide:                 true,
-				HideTitle:            true,
-				FullSizeContent:      true,
-				UseToolbar:           true,
-				HideToolbarSeparator: true,
-				ToolbarStyle:         application.MacToolbarStyleUnified,
-			},
-		},
-		ShouldClose: func(window *application.WebviewWindow) bool {
-			window.Hide()
-			return false
-		},
-		Windows: application.WindowsWindow{
-			HiddenOnTaskbar: true,
-		},
-		URL: "#/home",
-	})
 	//创建托盘
 	systemTray := app.NewSystemTray()
-	b, _ := assets.ReadFile("frontend/dist/logoX64.png")
+	b, _ := assets.ReadFile("frontend/dist/logoX32.png")
 	systemTray.SetTemplateIcon(b)
 	// 创建系统托盘菜单
 	trayMenu := tray.CreateSysTray(app)
 	// 设置托盘菜单
 	systemTray.SetMenu(trayMenu)
-	//systemTray.AttachWindow(coreWindow).WindowOffset(5)
+
+	//window.MainWindow(app)
+	//systemTray.AttachWindow(window.MainWindow(app)).WindowOffset(5)
 
 	go func() {
 		// 创建定时任务

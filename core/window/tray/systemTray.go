@@ -3,6 +3,7 @@ package tray
 
 import (
 	"PastePlus/core/basic"
+	"PastePlus/core/window"
 	"fmt"
 	"github.com/pkg/browser"
 	"github.com/wailsapp/wails/v3/pkg/application"
@@ -13,15 +14,16 @@ func CreateSysTray(app *application.App) *application.Menu {
 	trayMenu := app.NewMenu()
 	// 打开主面板
 	trayMenu.Add("Paste+").OnClick(func(ctx *application.Context) {
-		app.NewWebviewWindowWithOptions(application.WebviewWindowOptions{
-			Title: "打开",
-			Mac: application.MacWindow{
-				InvisibleTitleBarHeight: 50,
-				Backdrop:                application.MacBackdropTranslucent,
-				TitleBar:                application.MacTitleBarHiddenInset,
-			},
-			URL: "#/home",
-		})
+		//app.NewWebviewWindowWithOptions(application.WebviewWindowOptions{
+		//	Title: "打开",
+		//	Mac: application.MacWindow{
+		//		InvisibleTitleBarHeight: 50,
+		//		Backdrop:                application.MacBackdropTranslucent,
+		//		TitleBar:                application.MacTitleBarHiddenInset,
+		//	},
+		//	URL: "#/home",
+		//})
+		window.MainWindow(app)
 	})
 	// 设置分割线
 	trayMenu.AddSeparator()
