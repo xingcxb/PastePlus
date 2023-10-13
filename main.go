@@ -3,6 +3,7 @@ package main
 import (
 	"PastePlus/core/basic"
 	"PastePlus/core/plugin/cron"
+	"PastePlus/core/window/hook"
 	"PastePlus/core/window/tray"
 	"embed"
 	_ "embed"
@@ -17,6 +18,7 @@ func main() {
 	app := application.New(application.Options{
 		Name:        basic.AppName,
 		Description: basic.AppDescription,
+		// 设置任务栏icon
 		//Icon: func() []byte {
 		//	b, _ := assets.ReadFile("frontend/dist/logoX800.png")
 		//	return b
@@ -31,21 +33,24 @@ func main() {
 			// 允许所有的窗口关闭，但是程序依旧保持运行
 			ApplicationShouldTerminateAfterLastWindowClosed: false,
 		},
+		KeyBindings: map[string]func(window *application.WebviewWindow){},
 	})
 
 	//创建托盘
 	systemTray := app.NewSystemTray()
 	b, _ := assets.ReadFile("frontend/dist/logoX32.png")
-	systemTray.SetTemplateIcon(b)
+	// 设置托盘图标，彩色的
+	systemTray.SetIcon(b)
+	// 设置托盘图标，单色的
+	//systemTray.SetTemplateIcon(b)
 	// 创建系统托盘菜单
 	trayMenu := tray.CreateSysTray(app)
 	// 设置托盘菜单
 	systemTray.SetMenu(trayMenu)
 
-	//window.MainWindow(app)
-	//systemTray.AttachWindow(window.MainWindow(app)).WindowOffset(5)
-
 	go func() {
+		// 绑定热键
+		hook.MainWindowHotKey(app)
 		// 创建定时任务
 		cron.CreateCron()
 	}()
