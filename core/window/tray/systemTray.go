@@ -20,9 +20,9 @@ func CreateSysTray(app *application.App) *application.Menu {
 	// 设置分割线
 	trayMenu.AddSeparator()
 	// 设置
-	trayMenu.Add("偏好设置").OnClick(func(ctx *application.Context) {
-		window.SettingsWindow(app)
-	}).SetAccelerator("CmdOrCtrl+,")
+	trayMenu.Add("偏好设置").SetAccelerator("CmdOrCtrl+,").OnClick(func(ctx *application.Context) {
+		window.SettingsWindow(app, "")
+	})
 	// 设置分割线
 	trayMenu.AddSeparator()
 	// 帮助
@@ -42,7 +42,7 @@ func CreateSysTray(app *application.App) *application.Menu {
 	// 设置分割线
 	trayMenu.AddSeparator()
 	// 关于
-	trayMenu.Add("暂停").OnClick(func(ctx *application.Context) {
+	trayMenu.Add("暂停").SetEnabled(false).OnClick(func(ctx *application.Context) {
 		fmt.Println("====>暂停功能")
 	})
 	trayMenu.Add("退出").OnClick(func(ctx *application.Context) {

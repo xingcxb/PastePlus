@@ -24,6 +24,11 @@ const routes = [
         path: "/settings/update",
         name: "SettingsUpdate",
         component: () => import("../components/set/setUpdate.vue"),
+    },{
+        // 设置关于页面
+        path: "/settings/about",
+        name: "SettingsAbout",
+        component: () => import("../components/set/setAbout.vue"),
     },
     {
         // 主要页面

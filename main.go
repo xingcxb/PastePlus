@@ -3,7 +3,7 @@ package main
 import (
 	"PastePlus/core/basic"
 	"PastePlus/core/plugin/cron"
-	"PastePlus/core/window/hook"
+	"PastePlus/core/window/bindHotKey"
 	"PastePlus/core/window/tray"
 	"embed"
 	_ "embed"
@@ -33,7 +33,6 @@ func main() {
 			// 允许所有的窗口关闭，但是程序依旧保持运行
 			ApplicationShouldTerminateAfterLastWindowClosed: false,
 		},
-		KeyBindings: map[string]func(window *application.WebviewWindow){},
 	})
 
 	//创建托盘
@@ -50,7 +49,7 @@ func main() {
 
 	go func() {
 		// 绑定热键
-		hook.MainWindowHotKey(app)
+		bindHotKey.MainWindowHotKey(app)
 		// 创建定时任务
 		cron.CreateCron()
 	}()

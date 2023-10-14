@@ -1,30 +1,5 @@
 <template>
-  <!-- 设置 -->
-  <!--  <a-row justify="center">-->
-  <!--    <a-col :span="2">-->
-  <!--      <a-button-->
-  <!--        type="primary"-->
-  <!--        @click="handleClick('SettingsGeneral')"-->
-  <!--      >-->
-  <!--      <Icon icon="mingcute:switch-line" class="headerIcon"/>-->
-  <!--      <p class="headerFont">通用</p>-->
-  <!--      </a-button>-->
-  <!--    </a-col>-->
-  <!--    <a-col :span="2">-->
-  <!--      <Icon icon="material-symbols:keyboard-command-key" class="headerIcon"/>-->
-  <!--      <p class="headerFont">快捷键</p>-->
-  <!--    </a-col>-->
-  <!--    <a-col :span="2">-->
-  <!--      <Icon icon="iconamoon:synchronize-fill" class="headerIcon"/>-->
-  <!--      <p class="headerFont">同步</p>-->
-  <!--    </a-col>-->
-  <!--    <a-col :span="2">-->
-  <!--      <Icon icon="mdi:information-outline" class="headerIcon"/>-->
-  <!--      <p class="headerFont">关于</p>-->
-  <!--    </a-col>-->
-  <!--  </a-row>-->
-  <!--  <router-view />-->
-  <a-tabs v-model:activeKey="setType" tab-bar-style="card" centered>
+  <a-tabs v-model:activeKey="setType" centered>
     <a-tab-pane key="SettingsGeneral" tab="通用">
       <SetGeneral/>
     </a-tab-pane>
@@ -51,7 +26,7 @@ import SetShortcutKey from "@/components/set/setShortcutKey.vue";
 const setType = ref('SettingsGeneral');
 const activeRoute = ref('SettingsGeneral');
 
-
+// 点击操作
 function handleClick(routeName) {
   activeRoute.value = routeName;
   router.push({name: routeName});

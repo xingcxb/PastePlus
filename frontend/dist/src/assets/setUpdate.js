@@ -1,1 +1,1 @@
-import{_ as a,r as o,o as c,c as n,w as s,a as r}from"./index.js";const _={};function f(l,p){const e=o("a-col"),t=o("a-row");return c(),n(t,null,{default:s(()=>[r(e,{offset:10,span:8})]),_:1})}const m=a(_,[["render",f]]);export{m as default};
+import{_ as a,a as o,o as c,c as n,w as s,b as _}from"./index.js";const r={};function f(l,p){const e=o("a-col"),t=o("a-row");return c(),n(t,null,{default:s(()=>[_(e,{offset:10,span:8})]),_:1})}const m=a(r,[["render",f]]);export{m as default};

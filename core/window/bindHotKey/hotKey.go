@@ -1,5 +1,5 @@
 // Package bindHotKey 绑定快捷键
-package hook
+package bindHotKey
 
 import (
 	"PastePlus/core/window"
@@ -32,10 +32,10 @@ func MainWindowHotKey(app *application.App) {
 			}
 		})
 		// 注册command+shift+v快捷键
-		hotKeysCSV := []string{"command", "shift", "v"}
+		hotKeysCSV := []string{"command", "shift", "z"}
 		if runtime.GOOS != "darwin" {
 			// 如果不是Mac，则使用ctrl+shift+v
-			hotKeysCSV = []string{"ctrl", "shift", "v"}
+			hotKeysCSV[0] = "ctrl"
 		}
 		hook.Register(hook.KeyDown, hotKeysCSV, func(e hook.Event) {
 			// 启动窗口

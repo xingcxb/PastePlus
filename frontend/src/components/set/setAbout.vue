@@ -21,7 +21,7 @@
 
 // 浏览器打开链接
 function openBrowser(site) {
-  window.runtime.BrowserOpenURL(site);
+  window.open(site);
 }
 
 </script>

@@ -1,18 +1,20 @@
 <template>
-  <router-view />
+  <a-config-provider
+      :theme="{
+        token: {
+          colorPrimary: '#00c042',
+          colorInfo: '#32b92b',
+          borderRadius: 8,
+          wireframe: true,
+          fontSize: 14,
+          sizeStep: 4,
+          sizeUnit: 4
+        },
+      }">
+    <router-view/>
+  </a-config-provider>
 </template>
 <script setup>
 </script>
 <style scoped>
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.vue:hover {
-  filter: drop-shadow(0 0 2em #42b883aa);
-}
 </style>
