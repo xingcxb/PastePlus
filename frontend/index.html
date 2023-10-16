@@ -6,15 +6,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Paste+</title>
 </head>
-<body class="body">
+<body>
 <div class="home" id="app"></div>
 <script type="module" src="/src/main.js"></script>
 </body>
 <style>
-    .body {
+    html,body {
         margin: 0;
         padding: 0;
-        background: transparent;
+        //background: transparent;
+        min-height: 100%;
+        height: auto !important;
+        background-color: #f5f6f4;
     }
 
     .home {
@@ -22,7 +25,6 @@
         padding: 0;
         text-align: center;
         width: 100%;
-        height: 100%;
     }
 </style>
 </html>

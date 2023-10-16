@@ -13,7 +13,7 @@
       </a-typography-paragraph>
       <p class="appVersion">版本 0.0.1</p>
       <p class="appVersion">开发者：<span onclick="openBrowser('https://xingcxb.com')" class="link">Symbol</span></p>
-      <p class="appVersion">Github：<span onclick="openBrowser('https://xingcxb.com')" class="link">Symbol</span></p>
+      <p class="appVersion">Github：<span onclick="openBrowser('https://github.com/xingcxb/PastePlus')" class="link">Paste+</span></p>
     </a-col>
   </a-row>
 </template>
