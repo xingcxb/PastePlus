@@ -2,6 +2,7 @@
 package window
 
 import (
+	"PastePlus/core/api/customEvents"
 	"PastePlus/core/basic/common"
 	"PastePlus/core/window/hook"
 	"github.com/wailsapp/wails/v3/pkg/application"
@@ -12,7 +13,7 @@ var (
 	// 默认主窗口宽度
 	mainWindowWidth = 1920
 	// 默认主窗口高度
-	mainWindowHeight = 250
+	mainWindowHeight = 255
 )
 
 // MainWindow 主窗口
@@ -55,6 +56,9 @@ func MainWindow(app *application.App) {
 		Width:  mainWindowWidth,             // 设置宽度
 		Height: mainWindowHeight,            // 设置高度
 	})
+
+	customEvents.FindPasteHistory(app)
+
 	// 设置窗口位置
 	if runtime.GOOS == "darwin" {
 		// (0,0)为Mac窗口左下角，默认位置(0,604)
@@ -70,7 +74,7 @@ func MainWindow(app *application.App) {
 	// 设置窗口大小
 	mainWindow.SetSize(mainWindowWidth, mainWindowHeight)
 	// 窗口失去焦点时隐藏窗口
-	hook.WindowLostFocusHide(mainWindow)
+	//hook.WindowLostFocusHide(mainWindow)
 	return
 }
 

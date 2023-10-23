@@ -40,7 +40,7 @@ tasks:
     cmds:
      - task: pre-build
      - task: build-frontend
-     - go build -gcflags=all="-N -l" -o bin/testapp
+     - go build -gcflags=all="-N -l" -o bin/{{.APP_NAME}}
      - task: post-build
     env:
       CGO_CFLAGS: "-mmacosx-version-min=10.13"

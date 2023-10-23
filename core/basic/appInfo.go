@@ -1,12 +1,15 @@
 package basic
 
+import _ "embed"
+
+//go:embed version.txt
+var AppVersion string // AppVersion 应用版本
+
 const (
 	// AppName 应用名称
 	AppName = "Paste+"
 	// AppDescription 应用描述
 	AppDescription = "Paste+ 是一款跨平台的剪贴板管理工具，支持 Windows、MacOS、Linux。"
-	// AppVersion 应用版本
-	AppVersion = "0.0.1"
 	// AppConfigPath 应用配置文件夹名称
 	AppConfigPath = ".PastePlus"
 	// AppDbPath 应用数据库文件名称

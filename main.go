@@ -1,6 +1,7 @@
 package main
 
 import (
+	"PastePlus/core/api/bindings"
 	"PastePlus/core/basic"
 	"PastePlus/core/plugin/cron"
 	"PastePlus/core/window/bindHotKey"
@@ -18,11 +19,15 @@ func main() {
 	app := application.New(application.Options{
 		Name:        basic.AppName,
 		Description: basic.AppDescription,
-		// 设置任务栏icon
+		// 设置任务栏icon，默认关于icon
 		//Icon: func() []byte {
 		//	b, _ := assets.ReadFile("frontend/dist/logoX800.png")
 		//	return b
 		//}(),
+		Bind: []any{
+			// 绑定前端的api，目前这里还有bug，暂时不要使用
+			&bindings.SetService{},
+		},
 		Assets: application.AssetOptions{
 			FS: assets,
 		},

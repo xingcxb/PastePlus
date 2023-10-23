@@ -13,3 +13,8 @@ const (
 	SettingsUpdateWindowContentUrl   = "#/settings/update"   // 设置更新窗口内容
 	SettingsAboutWindowContentUrl    = "#/settings/about"    // 设置关于窗口内容
 )
+
+const (
+	EventsFindPasteHistoryToCore     = "findPasteHistoryToCore"     // 查找历史剪贴板数据
+	EventsFindPasteHistoryToFrontend = "findPasteHistoryToFrontend" // 查找历史剪贴板数据
+)
