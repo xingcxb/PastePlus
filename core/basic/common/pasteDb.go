@@ -5,7 +5,7 @@ package common
 type PasteHistory struct {
 	Id        int64  `json:"id"`         // ID 历史记录ID
 	FromApp   string `json:"from_app"`   // FromApp 历史记录来源应用
-	Content   string `json:"content"`    // Content 历史记录内容
+	Content   []byte `json:"content"`    // Content 历史记录内容
 	Type      string `json:"type"`       // Type 历史记录类型
 	CreatedAt string `json:"created_at"` // CreatedAt 历史记录创建时间
 }

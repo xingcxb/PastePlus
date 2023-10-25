@@ -1,25 +1,23 @@
 <template>
   <a-row style="padding-top: 5px" type="flex" justify="center">
-    <a-col :offset="10" :span="4">
-      <a-input-search
-          v-if="searchVisible"
-          ref="input"
-          placeholder="输入搜索关键字"
-          v-model="searchKeyword"
-          @blur="hideSearch"
-          @mousedown.native.stop="preventBlur"
-          enter-button @search="onSearch"
-          class="search-input"
-          key="searchInput"
-      >
-      </a-input-search>
-      <a-button type="text" v-else @click="showSearch" class="search-icon" key="searchIcon">
-        <template #icon>
-          <Icon icon="material-symbols:search-rounded" style="font-size: 24px"/>
-        </template>
-      </a-button>
+    <a-col :offset="10" :span="4" >
+        <a-input-search
+            v-if="searchVisible"
+            placeholder="输入搜索关键字"
+            v-model="searchKeyword"
+            @blur="hideSearch"
+            class="search-input"
+            key="searchInput"
+        >
+        </a-input-search>
+        <a-button type="text" v-else @click="showSearch" class="search-icon" key="searchIcon">
+          <template #icon>
+            <Icon icon="material-symbols:search-rounded" style="font-size: 24px;color: #79797b"/>
+          </template>
+        </a-button>
     </a-col>
     <a-col :offset="9" :span="1">
+      <!--   下拉菜单   -->
       <a-dropdown :trigger="['click']">
         <a-button type="text">
           <template #icon>
@@ -27,10 +25,10 @@
           </template>
         </a-button>
         <template #overlay>
-          <a-menu>
-            <a-menu-item key="1">1</a-menu-item>
-            <a-menu-item key="2">2</a-menu-item>
-            <a-menu-item key="3">3</a-menu-item>
+          <a-menu style="background-color: #f3f5f2">
+            <a-menu-item key="1">偏好设置...&nbsp;&nbsp;</a-menu-item>
+            <a-menu-item key="2">帮助中心</a-menu-item>
+            <a-menu-item key="3">退出</a-menu-item>
           </a-menu>
         </template>
       </a-dropdown>
@@ -57,19 +55,16 @@ const searchKeyword = ref("");
 // 显示搜索框
 const showSearch = () => {
   searchVisible.value = true;
-  nextTick(() => {
-    input.value.focus();
-  });
+  searchKeyword.value = ""
 };
 // 隐藏搜索框
-const hideSearch = () => {
-  searchVisible.value = false;
-  searchKeyword.value = "";
+const hideSearch = (event)=>  {
+  if (event.currentTarget === event.target){
+      searchVisible.value = false;
+      searchKeyword.value = "";
+  }
 };
 const input = ref(null);
-const preventBlur = e => {
-  e.preventDefault();
-};
 // 查询数据
 const onSearch = val => {
   console.log('search:', val);
@@ -108,4 +103,5 @@ onBeforeUnmount(() => {
 .search-icon {
   cursor: pointer;
 }
+
 </style>

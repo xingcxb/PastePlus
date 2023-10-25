@@ -57,6 +57,7 @@ func MainWindow(app *application.App) {
 		Height: mainWindowHeight,            // 设置高度
 	})
 
+	// 自定义事件，查询历史数据
 	customEvents.FindPasteHistory(app)
 
 	// 设置窗口位置

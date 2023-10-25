@@ -14,6 +14,7 @@ var (
 )
 
 // MainWindowHotKey 绑定主窗口快捷键
+// Deprecated: 该方法已经废弃，使用core/window/hook/hook.go中的WindowLostFocusHide方法
 func MainWindowHotKey(app *application.App) {
 	go func() {
 		hotKeysCV := []string{"command", "c"}

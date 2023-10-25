@@ -6,6 +6,7 @@ import (
 	"github.com/wailsapp/wails/v3/pkg/events"
 )
 
+// WindowClose 窗口关闭钩子
 func WindowClose(window *application.WebviewWindow) {
 	window.RegisterHook(events.Common.WindowClosing, func(e *application.WindowEvent) {
 		go func() {

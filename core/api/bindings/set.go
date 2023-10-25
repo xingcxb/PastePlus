@@ -22,14 +22,14 @@ func (*SetService) LoadingPasteData() string {
 	pastes = append(pastes, common.PasteHistory{
 		Id:        1,
 		FromApp:   "QQ",
-		Content:   "这是一条来自QQ的剪贴板数据",
+		Content:   []byte("这是一条来自QQ的剪贴板数据"),
 		Type:      "text",
 		CreatedAt: "2021-01-01 00:00:00",
 	})
 	pastes = append(pastes, common.PasteHistory{
 		Id:        2,
 		FromApp:   "微信",
-		Content:   "这是一条来自微信的剪贴板数据",
+		Content:   []byte("这是一条来自微信的剪贴板数据"),
 		Type:      "text",
 		CreatedAt: "2021-01-01 00:00:00",
 	})

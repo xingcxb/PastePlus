@@ -4,7 +4,8 @@ import (
 	"PastePlus/core/api/bindings"
 	"PastePlus/core/basic"
 	"PastePlus/core/plugin/cron"
-	"PastePlus/core/window/bindHotKey"
+	"PastePlus/core/plugin/db"
+	"PastePlus/core/window/hook"
 	"PastePlus/core/window/tray"
 	"embed"
 	_ "embed"
@@ -19,11 +20,11 @@ func main() {
 	app := application.New(application.Options{
 		Name:        basic.AppName,
 		Description: basic.AppDescription,
-		// 设置任务栏icon，默认关于icon
-		//Icon: func() []byte {
-		//	b, _ := assets.ReadFile("frontend/dist/logoX800.png")
-		//	return b
-		//}(),
+		// 设置任务栏icon，默认关于等其它原生对话框所使用的icon
+		Icon: func() []byte {
+			b, _ := assets.ReadFile("frontend/dist/logoX800.png")
+			return b
+		}(),
 		Bind: []any{
 			// 绑定前端的api，目前这里还有bug，暂时不要使用
 			&bindings.SetService{},
@@ -52,9 +53,16 @@ func main() {
 	// 设置托盘菜单
 	systemTray.SetMenu(trayMenu)
 
+	// 用于追加插件
 	go func() {
-		// 绑定热键
-		bindHotKey.MainWindowHotKey(app)
+		// 初始化数据库
+		db.InitDb()
+		if !db.Sqlite3Status {
+			// 启动失败关闭程序
+			app.Quit()
+		}
+		// 钩子启动粘贴板监听
+		hook.RegexListen()
 		// 创建定时任务
 		cron.CreateCron()
 	}()
