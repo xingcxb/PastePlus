@@ -16,17 +16,17 @@ type SetService struct {
 
 // LoadingPasteData 加载历史剪贴板数据
 func (*SetService) LoadingPasteData() string {
-	pastes := make([]common.PasteHistory, 0)
+	pastes := make([]common.PasteHistoryGo, 0)
 	// todo 从数据库中获取历史剪贴板数据
 	// 此处是假数据
-	pastes = append(pastes, common.PasteHistory{
+	pastes = append(pastes, common.PasteHistoryGo{
 		Id:        1,
 		FromApp:   "QQ",
 		Content:   []byte("这是一条来自QQ的剪贴板数据"),
 		Type:      "text",
 		CreatedAt: "2021-01-01 00:00:00",
 	})
-	pastes = append(pastes, common.PasteHistory{
+	pastes = append(pastes, common.PasteHistoryGo{
 		Id:        2,
 		FromApp:   "微信",
 		Content:   []byte("这是一条来自微信的剪贴板数据"),

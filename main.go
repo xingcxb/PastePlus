@@ -5,6 +5,7 @@ import (
 	"PastePlus/core/basic"
 	"PastePlus/core/plugin/cron"
 	"PastePlus/core/plugin/db"
+	"PastePlus/core/window/bindHotKey"
 	"PastePlus/core/window/hook"
 	"PastePlus/core/window/tray"
 	"embed"
@@ -58,9 +59,11 @@ func main() {
 		// 初始化数据库
 		db.InitDb()
 		if !db.Sqlite3Status {
-			// 启动失败关闭程序
+			// 数据库启动失败关闭程序
 			app.Quit()
 		}
+		// 绑定热键
+		bindHotKey.MainWindowHotKey(app)
 		// 钩子启动粘贴板监听
 		hook.RegexListen()
 		// 创建定时任务

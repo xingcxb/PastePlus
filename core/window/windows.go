@@ -13,7 +13,7 @@ var (
 	// 默认主窗口宽度
 	mainWindowWidth = 1920
 	// 默认主窗口高度
-	mainWindowHeight = 255
+	mainWindowHeight = 265
 )
 
 // MainWindow 主窗口
@@ -52,9 +52,10 @@ func MainWindow(app *application.App) {
 			Blue:  0,
 			Alpha: 0,
 		},
-		URL:    common.MainWindowContentUrl, // 设置窗口内容
-		Width:  mainWindowWidth,             // 设置宽度
-		Height: mainWindowHeight,            // 设置高度
+		DisableResize: true,                        // 禁止窗口缩放
+		URL:           common.MainWindowContentUrl, // 设置窗口内容
+		Width:         mainWindowWidth,             // 设置宽度
+		Height:        mainWindowHeight,            // 设置高度
 	})
 
 	// 自定义事件，查询历史数据
@@ -75,7 +76,7 @@ func MainWindow(app *application.App) {
 	// 设置窗口大小
 	mainWindow.SetSize(mainWindowWidth, mainWindowHeight)
 	// 窗口失去焦点时隐藏窗口
-	//hook.WindowLostFocusHide(mainWindow)
+	hook.WindowLostFocusClose(mainWindow)
 	return
 }
 

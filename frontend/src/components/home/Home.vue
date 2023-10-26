@@ -1,20 +1,13 @@
 <template>
-  <a-row style="padding-top: 5px" type="flex" justify="center">
+  <a-row style="padding-top: 5px;padding-bottom: 5px" type="flex" justify="center">
     <a-col :offset="10" :span="4" >
         <a-input-search
-            v-if="searchVisible"
             placeholder="输入搜索关键字"
             v-model="searchKeyword"
-            @blur="hideSearch"
             class="search-input"
             key="searchInput"
         >
         </a-input-search>
-        <a-button type="text" v-else @click="showSearch" class="search-icon" key="searchIcon">
-          <template #icon>
-            <Icon icon="material-symbols:search-rounded" style="font-size: 24px;color: #79797b"/>
-          </template>
-        </a-button>
     </a-col>
     <a-col :offset="9" :span="1">
       <!--   下拉菜单   -->
@@ -34,7 +27,7 @@
       </a-dropdown>
     </a-col>
   </a-row>
-  <a-space>
+  <a-space style="padding-left: 17px;width: 100%" size="middle">
     <div v-for="paste in pasteList.value">
       <a-card class="cardInfo" :title=paste.from_app :bordered="false">
         <a-typography>
@@ -48,23 +41,9 @@
 <script setup>
 import {Icon} from "@iconify/vue";
 import {nextTick, onBeforeUnmount, onMounted, reactive, ref} from "vue";
-// 搜索框是否可见
-const searchVisible = ref(false);
 // 输入框的值
 const searchKeyword = ref("");
-// 显示搜索框
-const showSearch = () => {
-  searchVisible.value = true;
-  searchKeyword.value = ""
-};
-// 隐藏搜索框
-const hideSearch = (event)=>  {
-  if (event.currentTarget === event.target){
-      searchVisible.value = false;
-      searchKeyword.value = "";
-  }
-};
-const input = ref(null);
+
 // 查询数据
 const onSearch = val => {
   console.log('search:', val);
@@ -79,13 +58,13 @@ function loadHistoryPasteData() {
   wails.Events.Emit({name: "findPasteHistoryToCore", Data: ""})
   wails.Events.Once("findPasteHistoryToFrontend", function (data) {
     let pasteJson = JSON.parse(data.data)
-    console.log(pasteJson)
+    console.log("======>",pasteJson)
     pasteList.value = pasteJson
   })
 }
 
 onMounted(() => {
-  // loadHistoryPasteData()
+  loadHistoryPasteData()
 });
 onBeforeUnmount(() => {
 });

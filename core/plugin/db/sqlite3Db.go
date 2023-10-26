@@ -104,7 +104,7 @@ func FindAllConfig() []common.PasteConfig {
  * @param gtDate 最小时间
  * @return 返回数据集合
  */
-func FindListByGTDate(gtDate string) []common.PasteHistory {
+func FindListByGTDate(gtDate string) []common.PasteHistoryGo {
 	sqlStms := "SELECT * FROM pasteHistory WHERE created_at > ?"
 	rows, err := sqlite3Db.Query(sqlStms, strKit.Splicing(gtDate, " 00:00:00"))
 	if err != nil {
@@ -112,9 +112,9 @@ func FindListByGTDate(gtDate string) []common.PasteHistory {
 		fmt.Println("查询数据库存储消息表失败", err.Error())
 		return nil
 	}
-	var pasteHistoryList []common.PasteHistory
+	var pasteHistoryList []common.PasteHistoryGo
 	for rows.Next() {
-		var pasteHistory common.PasteHistory
+		var pasteHistory common.PasteHistoryGo
 		_ = rows.Scan(&pasteHistory.Id, &pasteHistory.FromApp, &pasteHistory.Content, &pasteHistory.Type, &pasteHistory.CreatedAt)
 		pasteHistoryList = append(pasteHistoryList, pasteHistory)
 	}
@@ -127,7 +127,7 @@ func FindListByGTDate(gtDate string) []common.PasteHistory {
  * @param endDate 结束时间
  * @return 返回数据集合
  */
-func FindListByDate(beginDate, endDate string) []common.PasteHistory {
+func FindListByDate(beginDate, endDate string) []common.PasteHistoryGo {
 	beginTime := strKit.Splicing(beginDate, " 00:00:00")
 	endTime := strKit.Splicing(endDate, " 23:59:59")
 	sqlStms := "SELECT * FROM pasteHistory WHERE created_at BETWEEN ? AND ? ORDER BY created_at DESC"
@@ -137,9 +137,9 @@ func FindListByDate(beginDate, endDate string) []common.PasteHistory {
 		fmt.Println("查询数据库存储消息表失败", err.Error())
 		return nil
 	}
-	var pasteHistoryList []common.PasteHistory
+	var pasteHistoryList []common.PasteHistoryGo
 	for rows.Next() {
-		var pasteHistory common.PasteHistory
+		var pasteHistory common.PasteHistoryGo
 		_ = rows.Scan(&pasteHistory.Id, &pasteHistory.FromApp, &pasteHistory.Content, &pasteHistory.Type, &pasteHistory.CreatedAt)
 		pasteHistoryList = append(pasteHistoryList, pasteHistory)
 	}
@@ -151,28 +151,28 @@ func FindListByDate(beginDate, endDate string) []common.PasteHistory {
  * @param content 内容
  * @return 返回数据
  */
-func FindDataByContent(content []byte) common.PasteHistory {
+func FindDataByContent(content []byte) common.PasteHistoryGo {
 	sqlStm := "SELECT * FROM pasteHistory WHERE content = ? ORDER BY created_at DESC LIMIT 1"
 	rows, err := sqlite3Db.Query(sqlStm, content)
 	if err != nil {
 		dialogKit.PackageTipsDialog(dialogKit.Error, "错误", "查询数据库存储消息表失败")
 		fmt.Println("查询数据库存储消息表失败", err.Error())
-		return common.PasteHistory{}
+		return common.PasteHistoryGo{}
 	}
-	var pasteHistoryList []common.PasteHistory
+	var pasteHistoryList []common.PasteHistoryGo
 	for rows.Next() {
-		var pasteHistory common.PasteHistory
+		var pasteHistory common.PasteHistoryGo
 		_ = rows.Scan(&pasteHistory.Id, &pasteHistory.FromApp, &pasteHistory.Content, &pasteHistory.Type, &pasteHistory.CreatedAt)
 		pasteHistoryList = append(pasteHistoryList, pasteHistory)
 	}
 	if len(pasteHistoryList) == 0 {
-		return common.PasteHistory{}
+		return common.PasteHistoryGo{}
 	}
 	return pasteHistoryList[0]
 }
 
 // FindAllPaste 获取所有的剪贴板数据
-func FindAllPaste() []common.PasteHistory {
+func FindAllPaste() []common.PasteHistoryGo {
 	sqlStm := "SELECT * FROM pasteHistory ORDER BY created_at DESC"
 	rows, err := sqlite3Db.Query(sqlStm)
 	if err != nil {
@@ -180,9 +180,9 @@ func FindAllPaste() []common.PasteHistory {
 		fmt.Println("查询数据库存储消息表失败", err.Error())
 		return nil
 	}
-	var pasteHistoryList []common.PasteHistory
+	var pasteHistoryList []common.PasteHistoryGo
 	for rows.Next() {
-		var pasteHistory common.PasteHistory
+		var pasteHistory common.PasteHistoryGo
 		_ = rows.Scan(&pasteHistory.Id, &pasteHistory.FromApp, &pasteHistory.Content, &pasteHistory.Type, &pasteHistory.CreatedAt)
 		pasteHistoryList = append(pasteHistoryList, pasteHistory)
 	}
@@ -194,7 +194,7 @@ func FindAllPaste() []common.PasteHistory {
  * @param data 剪贴板数据
  * @return 返回是否成功
  */
-func SaveOrUpdatePaste(data common.PasteHistory) bool {
+func SaveOrUpdatePaste(data common.PasteHistoryGo) bool {
 	if data.Id == 0 {
 		sqlStm := "INSERT INTO pasteHistory(from_app, content, type, created_at) VALUES(?, ?, ?, ?)"
 		_, err := sqlite3Db.Exec(sqlStm, data.FromApp, data.Content, data.Type, data.CreatedAt)
