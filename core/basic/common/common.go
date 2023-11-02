@@ -15,6 +15,10 @@ const (
 )
 
 const (
-	EventsFindPasteHistoryToCore     = "findPasteHistoryToCore"     // 查找历史剪贴板数据
-	EventsFindPasteHistoryToFrontend = "findPasteHistoryToFrontend" // 查找历史剪贴板数据
+	EventsFindPasteHistoryToCore          = "findPasteHistoryToCore"          // 查找历史剪贴板数据，从页面传递到go
+	EventsFindPasteHistoryToFrontend      = "findPasteHistoryToFrontend"      // 查找历史剪贴板数据，从go到页面
+	EventsHandleCardClickToCore           = "handleCardClickToCore"           // 单击卡片操作事件名称，从页面传递到go
+	EventsHandleCardClickToFrontend       = "handleCardClickToFrontend"       // 单击卡片操作事件名称，从go到页面
+	EventsHandleCardDoubleClickToCore     = "handleCardDoubleClickToCore"     // 双击卡片操作事件名称，从页面传递到go
+	EventsHandleCardDoubleClickToFrontend = "handleCardDoubleClickToFrontend" // 双击卡片操作事件名称，从go传递到页面
 )

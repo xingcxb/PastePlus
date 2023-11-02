@@ -7,5 +7,5 @@ import (
 )
 
 func TestCreateDBFile(t *testing.T) {
-	fmt.Println(db.FindListByGTDate("2023-10-01"))
+	fmt.Println(db.FindPasteListByGTDate("2023-10-01"))
 }

@@ -5,6 +5,8 @@ import (
 	"PastePlus/core/api/customEvents"
 	"PastePlus/core/basic/common"
 	"PastePlus/core/window/hook"
+	"fmt"
+	"github.com/go-vgo/robotgo"
 	"github.com/wailsapp/wails/v3/pkg/application"
 	"runtime"
 )
@@ -13,11 +15,13 @@ var (
 	// 默认主窗口宽度
 	mainWindowWidth = 1920
 	// 默认主窗口高度
-	mainWindowHeight = 265
+	mainWindowHeight = 258
 )
 
 // MainWindow 主窗口
 func MainWindow(app *application.App) {
+	actionPid := robotgo.GetPid()
+	fmt.Println("当前激活的窗口的Pid", actionPid)
 	if w, ok := app.GetWindowByName(common.MainWindowName).(*application.WebviewWindow); ok {
 		// 判断如果当前的窗口已经存在，则显示并聚焦
 		w.Show().Focus()
@@ -52,14 +56,24 @@ func MainWindow(app *application.App) {
 			Blue:  0,
 			Alpha: 0,
 		},
+		KeyBindings: map[string]func(window *application.WebviewWindow){
+			"ESC": func(window *application.WebviewWindow) {
+				window.Close()
+			},
+		},
+		AlwaysOnTop:   true,                        // 窗口置顶，该操作不会让其它程序失去焦点
+		Focused:       false,                       // 窗口失去焦点
 		DisableResize: true,                        // 禁止窗口缩放
 		URL:           common.MainWindowContentUrl, // 设置窗口内容
 		Width:         mainWindowWidth,             // 设置宽度
 		Height:        mainWindowHeight,            // 设置高度
 	})
-
 	// 自定义事件，查询历史数据
 	customEvents.FindPasteHistory(app)
+	// 自定义事件，单击卡片事件
+	customEvents.HandleCardClick(app, mainWindow)
+	// 自定义事件，双击卡片事件
+	customEvents.HandleCardDoubleClick(app, mainWindow, actionPid)
 
 	// 设置窗口位置
 	if runtime.GOOS == "darwin" {
@@ -72,10 +86,11 @@ func MainWindow(app *application.App) {
 	}
 	//mainWindow.SetAbsolutePosition(0, 0)
 	// 设置为显示聚焦
-	mainWindow.Show().Focus()
+	//mainWindow.Show().Focus()
+	mainWindow.SetAlwaysOnTop(true)
 	// 设置窗口大小
 	mainWindow.SetSize(mainWindowWidth, mainWindowHeight)
-	// 窗口失去焦点时隐藏窗口
+	// 窗口失去焦点时关闭窗口
 	hook.WindowLostFocusClose(mainWindow)
 	return
 }

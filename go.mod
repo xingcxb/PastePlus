@@ -3,10 +3,13 @@ module PastePlus
 go 1.21
 
 require (
+	github.com/go-vgo/robotgo v1.0.0-rc2.1
+	github.com/mattn/go-sqlite3 v1.14.17
 	github.com/pkg/browser v0.0.0-20210911075715-681adbf594b8
+	github.com/robfig/cron/v3 v3.0.0
 	github.com/robotn/gohook v0.41.0
-	github.com/wailsapp/wails/v3 v3.0.0-alpha.0
-	github.com/xingcxb/goKit v0.2.13
+	github.com/wailsapp/wails/v3 v3.0.0-alpha.1
+	github.com/xingcxb/goKit v0.2.14
 	golang.design/x/clipboard v0.7.0
 )
 
@@ -22,9 +25,25 @@ require (
 )
 
 require (
+	github.com/gen2brain/shm v0.0.0-20230802011745-f2460f5984f7 // indirect
 	github.com/godbus/dbus/v5 v5.1.0 // indirect
-	github.com/stretchr/testify v1.8.4 // indirect
+	github.com/jezek/xgb v1.1.0 // indirect
+	github.com/kbinani/screenshot v0.0.0-20230812210009-b87d31814237 // indirect
+	github.com/lufia/plan9stats v0.0.0-20230326075908-cb1d2100619a // indirect
+	github.com/lxn/win v0.0.0-20210218163916-a377121e959e // indirect
+	github.com/otiai10/gosseract v2.2.1+incompatible // indirect
+	github.com/power-devops/perfstat v0.0.0-20221212215047-62379fc7944b // indirect
+	github.com/robotn/xgb v0.0.0-20190912153532-2cb92d044934 // indirect
+	github.com/robotn/xgbutil v0.0.0-20190912154524-c861d6f87770 // indirect
+	github.com/shirou/gopsutil/v3 v3.23.8 // indirect
+	github.com/shoenig/go-m1cpu v0.1.6 // indirect
+	github.com/tklauser/go-sysconf v0.3.12 // indirect
+	github.com/tklauser/numcpus v0.6.1 // indirect
+	github.com/vcaesar/gops v0.30.2 // indirect
+	github.com/vcaesar/imgo v0.40.0 // indirect
 	github.com/vcaesar/keycode v0.10.1 // indirect
+	github.com/vcaesar/tt v0.20.0 // indirect
+	github.com/yusufpapurcu/wmi v1.2.3 // indirect
 	golang.org/x/exp/shiny v0.0.0-20231006140011-7918f672742d // indirect
 	golang.org/x/image v0.12.0 // indirect
 	golang.org/x/mobile v0.0.0-20230301163155-e0f57694e12c // indirect
@@ -51,11 +70,9 @@ require (
 	github.com/lmittmann/tint v1.0.2 // indirect
 	github.com/mattn/go-colorable v0.1.13 // indirect
 	github.com/mattn/go-isatty v0.0.19 // indirect
-	github.com/mattn/go-sqlite3 v1.14.17
 	github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd // indirect
 	github.com/modern-go/reflect2 v1.0.2 // indirect
 	github.com/rivo/uniseg v0.4.4 // indirect
-	github.com/robfig/cron/v3 v3.0.0
 	github.com/samber/lo v1.38.1 // indirect
 	github.com/sergi/go-diff v1.2.0 // indirect
 	github.com/wailsapp/go-webview2 v1.0.9 // indirect

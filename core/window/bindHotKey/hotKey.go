@@ -12,8 +12,8 @@ var (
 	HotKeysCVHook chan hook.Event
 )
 
-// MainWindowHotKey 绑定主窗口快捷键
-func MainWindowHotKey(app *application.App) {
+// BindingGlobalHotkey 绑定主窗口快捷键
+func BindingGlobalHotkey(app *application.App) {
 	go func() {
 		// 注册command+shift+v快捷键
 		hotKeysCSV := []string{"command", "shift", "z"}

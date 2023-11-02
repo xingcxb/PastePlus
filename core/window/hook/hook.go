@@ -7,6 +7,9 @@ import (
 )
 
 // WindowClose 窗口关闭钩子
+/*
+ * @param window 当前窗口
+ */
 func WindowClose(window *application.WebviewWindow) {
 	window.RegisterHook(events.Common.WindowClosing, func(e *application.WindowEvent) {
 		go func() {
@@ -16,6 +19,9 @@ func WindowClose(window *application.WebviewWindow) {
 }
 
 // WindowLostFocusHide 窗口失去焦点窗口隐藏
+/*
+ * @param window 当前窗口
+ */
 func WindowLostFocusHide(window *application.WebviewWindow) {
 	window.RegisterHook(events.Common.WindowLostFocus, func(e *application.WindowEvent) {
 		// 为了避免隐藏窗体的时候出现卡顿的情况，使用协程处理
@@ -26,6 +32,9 @@ func WindowLostFocusHide(window *application.WebviewWindow) {
 }
 
 // WindowLostFocusClose 窗口失去焦点窗口关闭
+/*
+ * @param window 当前窗口
+ */
 func WindowLostFocusClose(window *application.WebviewWindow) {
 	window.RegisterHook(events.Common.WindowLostFocus, func(e *application.WindowEvent) {
 		go func() {

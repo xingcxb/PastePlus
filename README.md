@@ -8,7 +8,7 @@ Paste+是一个简单好用的📋粘贴板应用，它可以帮助你快速的�
 
 ## 功能
 
-- [x] 粘贴板历史自动保存
+- [x] 粘贴板历史自动保存（仅文本）
 - [ ] 粘贴板历史记录搜索
 - [ ] 粘贴板历史记录删除
 - [ ] 粘贴板历史记录清空
@@ -61,11 +61,18 @@ Paste+是一个简单好用的📋粘贴板应用，它可以帮助你快速的�
 
 ## 文档
 
-[wails V3文档](https://wailsapp.github.io/)
+[wails V3文档](https://v3alpha.wails.io/)
+
+[MiSans](https://hyperos.mi.com/font)
+
 
 ## 致谢
 
 [wails](https://github.com/wailsapp/wails/)
 
 [Ant Design Vue](https://antdv.com/components/overview-cn)
+
+[gohook](https://github.com/robotn/gohook)
+
+[macdriver](https://github.com/progrium/macdriver)
 

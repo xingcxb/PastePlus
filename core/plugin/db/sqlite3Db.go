@@ -31,7 +31,7 @@ func CheckDbFile(filePath string) bool {
 // InitDb 初始化sqlite3 用于判断是否存在sqlite3的文件，不存在就创建，存在就不创建
 func InitDb() {
 	// 延时启动数据库，让主窗口先启动
-	time.Sleep(1 * time.Second)
+	time.Sleep(300 * time.Millisecond)
 	homeDir, _ := kit.HomeDir(context.Background())
 	filePath := strKit.Splicing(homeDir+string(os.PathSeparator), basic.AppConfigPath, string(os.PathSeparator), basic.AppDbPath)
 	if !CheckDbFile(filePath) {
@@ -99,12 +99,12 @@ func FindAllConfig() []common.PasteConfig {
 	return pasteConfigList
 }
 
-// FindListByGTDate 指定日期查询大于当前日期的数据
+// FindPasteListByGTDate 指定日期查询大于当前日期的数据
 /*
  * @param gtDate 最小时间
  * @return 返回数据集合
  */
-func FindListByGTDate(gtDate string) []common.PasteHistoryGo {
+func FindPasteListByGTDate(gtDate string) []common.PasteHistoryGo {
 	sqlStms := "SELECT * FROM pasteHistory WHERE created_at > ?"
 	rows, err := sqlite3Db.Query(sqlStms, strKit.Splicing(gtDate, " 00:00:00"))
 	if err != nil {
@@ -121,13 +121,13 @@ func FindListByGTDate(gtDate string) []common.PasteHistoryGo {
 	return pasteHistoryList
 }
 
-// FindListByDate 指定日期查询数据
+// FindPasteListByDate 指定日期查询数据
 /*
  * @param beginDate 开始时间
  * @param endDate 结束时间
  * @return 返回数据集合
  */
-func FindListByDate(beginDate, endDate string) []common.PasteHistoryGo {
+func FindPasteListByDate(beginDate, endDate string) []common.PasteHistoryGo {
 	beginTime := strKit.Splicing(beginDate, " 00:00:00")
 	endTime := strKit.Splicing(endDate, " 23:59:59")
 	sqlStms := "SELECT * FROM pasteHistory WHERE created_at BETWEEN ? AND ? ORDER BY created_at DESC"
@@ -146,12 +146,32 @@ func FindListByDate(beginDate, endDate string) []common.PasteHistoryGo {
 	return pasteHistoryList
 }
 
-// FindDataByContent 根据内容查询数据
+// FindPasteById 通过id获取粘贴板历史数据
+/*
+ * @param id 粘贴板id
+ * @return 查询到的数据
+ */
+func FindPasteById(id int) common.PasteHistoryGo {
+	pasteHistory := common.PasteHistoryGo{}
+	sqlStms := "SELECT * FROM pasteHistory WHERE id = ?"
+	rows, err := sqlite3Db.Query(sqlStms, id)
+	if err != nil {
+		dialogKit.PackageTipsDialog(dialogKit.Error, "错误", "查询数据库存储消息表失败")
+		fmt.Println("查询数据库存储消息表失败", err.Error())
+		return pasteHistory
+	}
+	for rows.Next() {
+		_ = rows.Scan(&pasteHistory.Id, &pasteHistory.FromApp, &pasteHistory.Content, &pasteHistory.Type, &pasteHistory.CreatedAt)
+	}
+	return pasteHistory
+}
+
+// FindPasteDataByContent 根据内容查询数据
 /*
  * @param content 内容
  * @return 返回数据
  */
-func FindDataByContent(content []byte) common.PasteHistoryGo {
+func FindPasteDataByContent(content []byte) common.PasteHistoryGo {
 	sqlStm := "SELECT * FROM pasteHistory WHERE content = ? ORDER BY created_at DESC LIMIT 1"
 	rows, err := sqlite3Db.Query(sqlStm, content)
 	if err != nil {
@@ -171,8 +191,8 @@ func FindDataByContent(content []byte) common.PasteHistoryGo {
 	return pasteHistoryList[0]
 }
 
-// FindAllPaste 获取所有的剪贴板数据
-func FindAllPaste() []common.PasteHistoryGo {
+// FindPasteDateByAll 获取所有的剪贴板数据
+func FindPasteDateByAll() []common.PasteHistoryGo {
 	sqlStm := "SELECT * FROM pasteHistory ORDER BY created_at DESC"
 	rows, err := sqlite3Db.Query(sqlStm)
 	if err != nil {

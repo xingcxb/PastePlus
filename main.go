@@ -62,9 +62,9 @@ func main() {
 			// 数据库启动失败关闭程序
 			app.Quit()
 		}
-		// 绑定热键
-		bindHotKey.MainWindowHotKey(app)
-		// 钩子启动粘贴板监听
+		// 绑定全局热键
+		bindHotKey.BindingGlobalHotkey(app)
+		// 启动监听
 		hook.RegexListen()
 		// 创建定时任务
 		cron.CreateCron()
