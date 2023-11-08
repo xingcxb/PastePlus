@@ -1,6 +1,12 @@
 package common
 
 const (
+	Windows = "windows" // Windows
+	MacOS   = "darwin"  // macOS
+	Linux   = "linux"   // Linux
+)
+
+const (
 	MainWindowName     = "MainWindow"     // 主窗口名称
 	SettingsWindowName = "SettingsWindow" // 设置窗口名称
 )

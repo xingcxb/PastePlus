@@ -4,6 +4,7 @@ package window
 import (
 	"PastePlus/core/api/customEvents"
 	"PastePlus/core/basic/common"
+	"PastePlus/core/kit"
 	"PastePlus/core/window/hook"
 	"fmt"
 	"github.com/go-vgo/robotgo"
@@ -23,10 +24,14 @@ func MainWindow(app *application.App) {
 	actionPid := robotgo.GetPid()
 	fmt.Println("当前激活的窗口的Pid", actionPid)
 	if w, ok := app.GetWindowByName(common.MainWindowName).(*application.WebviewWindow); ok {
-		// 判断如果当前的窗口已经存在，则显示并聚焦
+		// 判断如果当前的窗口已经存在，则显示
+		fmt.Println("当前激活的窗口的Pid", actionPid)
+		actionPid = kit.CheckPid(robotgo.GetPid(), app.GetPID())
+		fmt.Println("判断后激活窗口的Pid", actionPid)
 		w.Show().Focus()
 		return
 	}
+	actionPid = kit.CheckPid(robotgo.GetPid(), app.GetPID())
 	// 获取屏幕，该函数调用必须在app.Run()之后
 	screen, _ := app.GetPrimaryScreen()
 	// 覆盖默认屏幕的宽度
@@ -57,7 +62,7 @@ func MainWindow(app *application.App) {
 			Alpha: 0,
 		},
 		KeyBindings: map[string]func(window *application.WebviewWindow){
-			"ESC": func(window *application.WebviewWindow) {
+			"escape": func(window *application.WebviewWindow) {
 				window.Close()
 			},
 		},
@@ -84,10 +89,11 @@ func MainWindow(app *application.App) {
 		// 如果是非macOS系统，假定原点坐标为左上角
 		mainWindow.SetAbsolutePosition(0, -mainWindowHeight)
 	}
-	//mainWindow.SetAbsolutePosition(0, 0)
 	// 设置为显示聚焦
 	//mainWindow.Show().Focus()
 	mainWindow.SetAlwaysOnTop(true)
+	// 强制刷新
+	mainWindow.ForceReload()
 	// 设置窗口大小
 	mainWindow.SetSize(mainWindowWidth, mainWindowHeight)
 	// 窗口失去焦点时关闭窗口

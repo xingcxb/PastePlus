@@ -5,15 +5,15 @@
       <a-typography-title
           class="AppInfo"
           :level="3"
-      >Paste+
+      >PastePlus
       </a-typography-title>
       <a-divider />
       <a-typography-paragraph class="appVersion">
-        Paste+ 是一款跨平台的剪贴板管理工具，支持 Windows、MacOS、Linux。
+        PastePlus 是一款跨平台的剪贴板管理工具，支持 Windows、MacOS、Linux。
       </a-typography-paragraph>
       <p class="appVersion">版本 0.0.1</p>
       <p class="appVersion">开发者：<span onclick="openBrowser('https://xingcxb.com')" class="link">Symbol</span></p>
-      <p class="appVersion">Github：<span onclick="openBrowser('https://github.com/xingcxb/PastePlus')" class="link">Paste+</span></p>
+      <p class="appVersion">Github：<span onclick="openBrowser('https://github.com/xingcxb/PastePlus')" class="link">PastePlus</span></p>
     </a-col>
   </a-row>
 </template>

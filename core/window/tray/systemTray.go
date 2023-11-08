@@ -3,6 +3,7 @@ package tray
 
 import (
 	"PastePlus/core/basic"
+	"PastePlus/core/kit"
 	"PastePlus/core/window"
 	"fmt"
 	"github.com/pkg/browser"
@@ -37,7 +38,7 @@ func CreateSysTray(app *application.App) *application.Menu {
 		browser.OpenURL(basic.AppGithubIssues)
 	})
 	subMenu.Add("检查更新...").OnClick(func(ctx *application.Context) {
-		fmt.Println("======检查更新...")
+		kit.UpdateAppVersion()
 	})
 	// 设置分割线
 	trayMenu.AddSeparator()

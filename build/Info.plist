@@ -4,17 +4,17 @@
         <key>CFBundlePackageType</key>
         <string>APPL</string>
         <key>CFBundleName</key>
-        <string>My Productname</string>
+        <string>PastePlus</string>
         <key>CFBundleExecutable</key>
         <string>PastePlus</string>
         <key>CFBundleIdentifier</key>
-        <string>com.wails.pasteplus</string>
+        <string>com.xingcxb.pasteplus</string>
         <key>CFBundleVersion</key>
-        <string></string>
+        <string>v0.0.1-alpha.0</string>
         <key>CFBundleGetInfoString</key>
         <string>(c) 2023 </string>
         <key>CFBundleShortVersionString</key>
-        <string></string>
+        <string>0.0.1</string>
         <key>CFBundleIconFile</key>
         <string>icons</string>
         <key>LSMinimumSystemVersion</key>
@@ -23,5 +23,11 @@
         <string>true</string>
         <key>NSHumanReadableCopyright</key>
         <string></string>
+        <key>NSAppleEventsUsageDescription</key>
+        <string>PastePlus需要自动化控制权限来实现其功能。</string>
+        <key>NSAutomatedInputEventSystemUsageDescription</key>
+        <string>PastePlus需要自动化控制权限来实现其功能。</string>
+        <key>NSAppleEventsUsageDescription</key>
+        <string>PastePlus需要辅助功能访问权限来实现其功能。</string>
     </dict>
 </plist>

@@ -5,9 +5,11 @@ go 1.21
 require (
 	github.com/go-vgo/robotgo v1.0.0-rc2.1
 	github.com/mattn/go-sqlite3 v1.14.17
+	github.com/ncruces/zenity v0.10.10
 	github.com/pkg/browser v0.0.0-20210911075715-681adbf594b8
 	github.com/robfig/cron/v3 v3.0.0
 	github.com/robotn/gohook v0.41.0
+	github.com/tidwall/gjson v1.17.0
 	github.com/wailsapp/wails/v3 v3.0.0-alpha.1
 	github.com/xingcxb/goKit v0.2.14
 	golang.design/x/clipboard v0.7.0
@@ -53,7 +55,9 @@ require (
 
 require (
 	github.com/Microsoft/go-winio v0.6.1 // indirect
+	github.com/akavel/rsrc v0.10.2 // indirect
 	github.com/bep/debounce v1.2.1 // indirect
+	github.com/dchest/jsmin v0.0.0-20220218165748-59f39799265f // indirect
 	github.com/ebitengine/purego v0.5.0 // indirect
 	github.com/emirpasic/gods v1.18.1 // indirect
 	github.com/go-git/gcfg v1.5.1-0.20230307220236-3a3c6141e376 // indirect
@@ -63,6 +67,7 @@ require (
 	github.com/google/uuid v1.3.1 // indirect
 	github.com/jbenet/go-context v0.0.0-20150711004518-d14ea06fba99 // indirect
 	github.com/jchv/go-winloader v0.0.0-20210711035445-715c2860da7e // indirect
+	github.com/josephspurrier/goversioninfo v1.4.0 // indirect
 	github.com/json-iterator/go v1.1.12 // indirect
 	github.com/kevinburke/ssh_config v1.2.0 // indirect
 	github.com/leaanthony/go-ansi-parser v1.6.1 // indirect
@@ -72,9 +77,12 @@ require (
 	github.com/mattn/go-isatty v0.0.19 // indirect
 	github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd // indirect
 	github.com/modern-go/reflect2 v1.0.2 // indirect
+	github.com/randall77/makefat v0.0.0-20210315173500-7ddd0e42c844 // indirect
 	github.com/rivo/uniseg v0.4.4 // indirect
 	github.com/samber/lo v1.38.1 // indirect
 	github.com/sergi/go-diff v1.2.0 // indirect
+	github.com/tidwall/match v1.1.1 // indirect
+	github.com/tidwall/pretty v1.2.1 // indirect
 	github.com/wailsapp/go-webview2 v1.0.9 // indirect
 	github.com/wailsapp/mimetype v1.4.1 // indirect
 	github.com/xanzy/ssh-agent v0.3.3 // indirect

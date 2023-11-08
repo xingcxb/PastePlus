@@ -11,8 +11,11 @@ import (
 	"fmt"
 	"github.com/go-vgo/robotgo"
 	"github.com/wailsapp/wails/v3/pkg/application"
+	"github.com/xingcxb/goKit/core/numKit"
 	"github.com/xingcxb/goKit/core/strKit"
 	"golang.design/x/clipboard"
+	"os/exec"
+	"runtime"
 )
 
 // FindPasteHistory 查找历史剪贴板自定义事件
@@ -85,6 +88,7 @@ func HandleCardClick(app *application.App, window *application.WebviewWindow) {
 
 // HandleCardDoubleClick 双击卡片绑定事件
 /*
+ * > 该函数存在异常，如果双击的过快，会导致程序崩溃
  * @param app app基础
  * @param window 当前窗口
  */
@@ -102,12 +106,27 @@ func HandleCardDoubleClick(app *application.App, window *application.WebviewWind
 		window.Close()
 		// 格式化输出
 		pasteContent := formatContent(pasteData.Content, pasteData.Type)
-		fmt.Println(pasteContent)
-		// 切换到下一个程序聚焦
-		robotgo.ActivePid(actionPid)
-		if pasteData.Type == "text" {
-			robotgo.TypeStr(pasteContent)
+		fmt.Println("要释放的数据：", pasteContent)
+		fmt.Println("要接受数据的pid：", actionPid)
+		if actionPid != 0 {
+			pidExists, err := robotgo.PidExists(actionPid)
+			if err != nil || !pidExists {
+				fmt.Println("查询程序是否存在失败", err.Error())
+				return
+			}
+			// 如果上一个应用的pid不是程序自身，那么切换到下一个程序聚焦
+			fmt.Println(robotgo.FindName(actionPid))
+			err = activeWindow(actionPid) // robotgo.ActivePid(actionPid)
+			if err != nil {
+				fmt.Println("激活程序失败：", err.Error())
+				return
+			}
+			fmt.Println("激活程序成功")
+			if pasteData.Type == "text" {
+				robotgo.TypeStr(pasteContent)
+			}
 		}
+
 	})
 }
 
@@ -115,6 +134,7 @@ func HandleCardDoubleClick(app *application.App, window *application.WebviewWind
 /*
  * @param contentByte 原始数据
  * @param typeStr 数据类型
+ * @return string 格式化后的数据
  */
 func formatContent(contentByte []byte, typeStr string) string {
 	pasteContent := ""
@@ -125,4 +145,22 @@ func formatContent(contentByte []byte, typeStr string) string {
 		pasteContent = string(contentByte)
 	}
 	return pasteContent
+}
+
+// activeWindow 激活窗口
+/*
+ * @param pid int 程序pid
+ * @return error 错误信息
+ */
+func activeWindow(pid int) error {
+	var cmd *exec.Cmd
+	switch runtime.GOOS {
+	case "darwin":
+		cmd = exec.Command("osascript", "-e", strKit.Splicing("tell application \"System Events\" to set frontmost of the first process whose unix id is ", numKit.Int2Str(pid)), "to true")
+	case "windows":
+		cmd = exec.Command("cmd", "/c", strKit.Splicing("wmic process where processid=", numKit.Int2Str(pid), " call setforeground"))
+	case "linux":
+		cmd = exec.Command("xdotool", "windowactivate", strKit.Splicing("--sync ", numKit.Int2Str(pid)))
+	}
+	return cmd.Run()
 }

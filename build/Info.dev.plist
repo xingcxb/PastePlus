@@ -24,6 +24,12 @@
         <key>NSHumanReadableCopyright</key>
         <string></string>
         <key>NSAppTransportSecurity</key>
+        <key>NSAppleEventsUsageDescription</key>
+        <string>PastePlus需要自动化控制权限来实现其功能。</string>
+        <key>NSAutomatedInputEventSystemUsageDescription</key>
+        <string>PastePlus需要自动化控制权限来实现其功能。</string>
+        <key>NSAppleEventsUsageDescription</key>
+        <string>PastePlus需要辅助功能访问权限来实现其功能。</string>
         <dict>
             <key>NSAllowsLocalNetworking</key>
             <true/>

@@ -7,7 +7,7 @@
       justify="end"
       labelAlign="right">
     <a-form-item label="启动">
-      <a-checkbox v-model:checked="bootUp" class="formStyle">开机后启动 Paste+</a-checkbox>
+      <a-checkbox v-model:checked="bootUp" class="formStyle">开机后启动 PastePlus</a-checkbox>
     </a-form-item>
     <a-form-item label="集成">
       <a-checkbox v-model:checked="pasteText" class="formStyle">粘贴为纯文本</a-checkbox>

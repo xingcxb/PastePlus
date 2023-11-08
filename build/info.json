@@ -4,11 +4,11 @@
 	},
 	"info": {
 		"0000": {
-			"ProductVersion": "",
-			"CompanyName": "",
-			"FileDescription": "",
+			"ProductVersion": "v0.0.1-alpha.0",
+			"CompanyName": "xingcxb",
+			"FileDescription": "一个小小的粘贴板加强的工具",
 			"LegalCopyright": "",
-			"ProductName": "",
+			"ProductName": "PastePlus",
 			"Comments": "(c) 2023 "
 		}
 	}

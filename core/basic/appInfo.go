@@ -7,9 +7,9 @@ var AppVersion string // AppVersion 应用版本
 
 const (
 	// AppName 应用名称
-	AppName = "Paste+"
+	AppName = "PastePlus"
 	// AppDescription 应用描述
-	AppDescription = "Paste+ 是一款跨平台的剪贴板管理工具，支持 Windows、MacOS、Linux。"
+	AppDescription = "PastePlus 是一款跨平台的剪贴板管理工具，支持 Windows、MacOS、Linux。"
 	// AppConfigPath 应用配置文件夹名称
 	AppConfigPath = ".PastePlus"
 	// AppDbPath 应用数据库文件名称
