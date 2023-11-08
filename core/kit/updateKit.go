@@ -17,10 +17,8 @@ import (
 )
 
 var (
-	//ownerGithub = "xingcxb"   // GitHub 仓库的所有者
-	//repoGithub  = "PastePlus"   // GitHub 仓库的名称
-	ownerGithub = "duolabmeng6" // GitHub 仓库的所有者
-	repoGithub  = "go-qoq"      // GitHub 仓库的名称
+	ownerGithub = "xingcxb"   // GitHub 仓库的所有者
+	repoGithub  = "PastePlus" // GitHub 仓库的名称
 )
 
 // UpdateAppVersion 更新应用版本
@@ -68,8 +66,7 @@ func updateApp(releaseInfo common.ReleaseInfo, progress zenity.ProgressDialog) {
 	switch sysType {
 	case common.MacOS:
 		// Mac
-		//url = releaseInfo.DownloadURLs[common.MacOS]
-		url = "https://gitee.com/cxasm/notepad--/releases/download/v2.10/Notepad--v2.10.0-mac_x64_12.3.dmg"
+		url = releaseInfo.DownloadURLs[common.MacOS]
 		fileName = strKit.Splicing(fileName, ".dmg")
 	case common.Linux:
 		// Linux
