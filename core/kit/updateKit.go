@@ -6,6 +6,7 @@ import (
 	"PastePlus/core/basic/common"
 	"PastePlus/core/plugin/dialogKit"
 	"context"
+	"errors"
 	"github.com/ncruces/zenity"
 	"github.com/tidwall/gjson"
 	"github.com/xingcxb/goKit/core/httpKit"
@@ -25,28 +26,33 @@ var (
 func UpdateAppVersion() {
 	// 检查最新版本
 	releaseInfo := CheckLatestVersion()
-	if releaseInfo.Version == basic.AppVersion {
+	if releaseInfo.Version == basic.AppVersion || releaseInfo.Version == "" {
 		dialogKit.PackageTipsDialog(dialogKit.Info, "提示", "🎉 当前已经是最新版本")
 		return
+	} else {
+		// 创建一个提示框
+		err := zenity.Question(strKit.Splicing("检测到新版本：", releaseInfo.Version, "\n", releaseInfo.Changelog),
+			zenity.Title("提示"),
+			zenity.Icon(zenity.InfoIcon),
+			zenity.OKLabel("更新"),
+			zenity.CancelLabel("取消"))
+		if err != nil {
+			if errors.Is(err, zenity.ErrCanceled) {
+				// 用户点击了"取消"按钮
+				return
+			}
+			dialogKit.PackageTipsDialog(dialogKit.Warning, "错误", "唤起更新提示框失败")
+			return
+		}
+		// 创建一个进度条
+		progress, err := zenity.Progress(zenity.Title("下载更新"), zenity.MaxValue(100))
+		if err != nil {
+			dialogKit.PackageTipsDialog(dialogKit.Warning, "错误", "唤起下载进度条失败")
+			return
+		}
+		// 执行更新应用
+		updateApp(releaseInfo, progress)
 	}
-	// 创建一个提示框
-	err := zenity.Question(strKit.Splicing("检测到新版本：", releaseInfo.Version, "\n", releaseInfo.Changelog),
-		zenity.Title("提示"),
-		zenity.Icon(zenity.InfoIcon),
-		zenity.OKLabel("更新"),
-		zenity.CancelLabel("取消"))
-	if err != nil {
-		dialogKit.PackageTipsDialog(dialogKit.Warning, "错误", "唤起更新提示框失败")
-		return
-	}
-	// 创建一个进度条
-	progress, err := zenity.Progress(zenity.Title("下载更新"), zenity.MaxValue(100))
-	if err != nil {
-		dialogKit.PackageTipsDialog(dialogKit.Warning, "错误", "唤起下载进度条失败")
-		return
-	}
-	// 执行更新应用
-	updateApp(releaseInfo, progress)
 }
 
 // updateApp 更新应用
@@ -133,7 +139,6 @@ func CheckVersionInGithub() common.ReleaseInfo {
 		return releaseInfo // 发生错误，直接返回
 	}
 	if responseStr == "[]" {
-		dialogKit.PackageTipsDialog(dialogKit.Info, "提示", "🎉 当前已经是最新版本")
 		return releaseInfo
 	}
 	lastResult := gjson.Parse(responseStr).Array()[0]
