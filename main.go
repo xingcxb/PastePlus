@@ -44,7 +44,7 @@ func main() {
 
 	//创建托盘
 	systemTray := app.NewSystemTray()
-	b, _ := assets.ReadFile("frontend/dist/logoX32.png")
+	b, _ := assets.ReadFile("frontend/dist/icon/32@2x.png")
 	// 设置托盘图标，彩色的
 	systemTray.SetIcon(b)
 	// 设置托盘图标，单色的

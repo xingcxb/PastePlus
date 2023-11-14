@@ -66,7 +66,7 @@ func MainWindow(app *application.App) {
 				window.Close()
 			},
 		},
-		AlwaysOnTop:   true,                        // 窗口置顶，该操作不会让其它程序失去焦点
+		//AlwaysOnTop:   true,                        // 窗口置顶，该操作不会让其它程序失去焦点
 		Focused:       false,                       // 窗口失去焦点
 		DisableResize: true,                        // 禁止窗口缩放
 		URL:           common.MainWindowContentUrl, // 设置窗口内容

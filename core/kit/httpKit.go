@@ -10,6 +10,14 @@ import (
 )
 
 // HttpDownloadWithProgress 带进度条的下载
+/*
+ * @param urlString 网址
+ * @param savePath 保存路径 末尾是否携带/都可以
+ * @param fileName 文件名，如果不存在则自动获取
+ * @param isCover 是否覆盖 true 覆盖 false 不覆盖(当文件存在的时候返回该文件已存在)
+ * @param fn func(rate int) 进度回调函数
+ * @return string 文件路径,error
+ */
 func HttpDownloadWithProgress(urlString, savePath, fileName string, isCover bool, fn func(rate int)) (string, error) {
 	if savePath == "" {
 		return "", errors.New("保存路径为空")

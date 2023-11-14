@@ -4,13 +4,13 @@ go 1.21
 
 require (
 	github.com/go-vgo/robotgo v1.0.0-rc2.1
-	github.com/mattn/go-sqlite3 v1.14.17
+	github.com/mattn/go-sqlite3 v1.14.18
 	github.com/ncruces/zenity v0.10.10
 	github.com/pkg/browser v0.0.0-20210911075715-681adbf594b8
-	github.com/robfig/cron/v3 v3.0.0
+	github.com/robfig/cron/v3 v3.0.1
 	github.com/robotn/gohook v0.41.0
 	github.com/tidwall/gjson v1.17.0
-	github.com/wailsapp/wails/v3 v3.0.0-alpha.1
+	github.com/wailsapp/wails/v3 v3.0.0-alpha.2
 	github.com/xingcxb/goKit v0.2.14
 	golang.design/x/clipboard v0.7.0
 )

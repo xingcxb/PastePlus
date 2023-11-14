@@ -45,6 +45,7 @@ func FindPasteHistory(app *application.App) {
 			pasteVueList = append(pasteVueList, pasteVue)
 		}
 		pastesJsonByte, err := json.Marshal(pasteVueList)
+		fmt.Println("序列化后的数据：", string(pastesJsonByte))
 		if err != nil {
 			dialogKit.PackageTipsDialog(dialogKit.Warning, "错误", "序列化历史剪贴板数据失败")
 			return
@@ -81,14 +82,11 @@ func HandleCardClick(app *application.App, window *application.WebviewWindow) {
 				return clipboard.FmtText
 			}
 		}(), pasteData.Content)
-		// 关闭窗口
-		//window.Close()
 	})
 }
 
 // HandleCardDoubleClick 双击卡片绑定事件
 /*
- * > 该函数存在异常，如果双击的过快，会导致程序崩溃
  * @param app app基础
  * @param window 当前窗口
  */
@@ -114,26 +112,32 @@ func HandleCardDoubleClick(app *application.App, window *application.WebviewWind
 				fmt.Println("查询程序是否存在失败", err.Error())
 				return
 			}
-			// 如果上一个应用的pid不是程序自身，那么切换到下一个程序聚焦
+			// 如果上一个应用的pid不是程序自身，那么切换到下一个程序聚焦MilliSleepMilliSleep
 			fmt.Println(robotgo.FindName(actionPid))
 			err = activeWindow(actionPid) // robotgo.ActivePid(actionPid)
 			if err != nil {
 				fmt.Println("激活程序失败：", err.Error())
+				dialogKit.PackageTipsDialog(dialogKit.Warning, "错误", strKit.Splicing("激活程序失败", err.Error()))
 				return
 			}
+			//dialogKit.PackageTipsDialog(dialogKit.Info, "成功", "激活程序成功")cmd =cmd = cmd =
 			fmt.Println("激活程序成功")
 			if pasteData.Type == "text" {
+				robotgo.MilliSleep(300)
 				robotgo.TypeStr(pasteContent)
 			}
+			// 窗口关闭时，关闭当前窗口上所有的绑定事件
+			app.Events.Off(common.EventsHandleCardDoubleClickToCore)
+			app.Events.Off(common.EventsHandleCardClickToCore)
+			app.Events.Off(common.EventsFindPasteHistoryToCore)
 		}
-
 	})
 }
 
 // formatContent 格式化输出数据
 /*
  * @param contentByte 原始数据
- * @param typeStr 数据类型
+ * @param typeStr 数据类型cmd =
  * @return string 格式化后的数据
  */
 func formatContent(contentByte []byte, typeStr string) string {
@@ -156,7 +160,8 @@ func activeWindow(pid int) error {
 	var cmd *exec.Cmd
 	switch runtime.GOOS {
 	case "darwin":
-		cmd = exec.Command("osascript", "-e", strKit.Splicing("tell application \"System Events\" to set frontmost of the first process whose unix id is ", numKit.Int2Str(pid)), "to true")
+		//cmd = exec.Command("osascript", "-e", strKit.Splicing("tell application \"System Events\" to set frontmost of the first process whose unix id is ", numKit.Int2Str(pid)), "to true")
+		cmd = exec.Command("osascript", "-e", fmt.Sprintf(`tell application "System Events" to set frontmost of every process whose unix id is %d to true`, pid))
 	case "windows":
 		cmd = exec.Command("cmd", "/c", strKit.Splicing("wmic process where processid=", numKit.Int2Str(pid), " call setforeground"))
 	case "linux":

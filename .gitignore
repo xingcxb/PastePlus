@@ -6,4 +6,6 @@
 .DS_Store
 /frontend/src/.DS_Store
 /v3/
-
+/frontend/dist/
+/PastePlus.app/
+/build/bin/PastePlus

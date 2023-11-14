@@ -70,10 +70,15 @@ const onSearch = val => {
   console.log('search:', val);
 };
 
+let isDoubleClick = false;
 // 卡片单击操作，将数据写入粘贴板中
 function handleCardClick(pasteDataId) {
   clearTimeout(timeRecords);
   timeRecords = setTimeout(() => {
+    if (isDoubleClick) {
+      isDoubleClick = false;
+      return;
+    }
     console.log("单击来咯")
     wails.Events.Emit({name: "handleCardClickToCore", Data: pasteDataId})
   },300);
@@ -94,6 +99,25 @@ function loadHistoryPasteData() {
     let pasteJson = JSON.parse(data.data)
     pasteList.value = pasteJson
   })
+//   let pasteJson = [
+//   {
+//     "id": 3,
+//     "from_app": "",
+//     "content": "HandleCardClick",
+//     "type": "text",
+//     "spacing_time": "现在",
+//     "created_at": "2023-11-13 17:36:49"
+//   },
+//   {
+//     "id": 2,
+//     "from_app": "",
+//     "content": "单击卡片绑定事件",
+//     "type": "text",
+//     "spacing_time": "现在",
+//     "created_at": "2023-11-13 17:36:46"
+//   }
+// ];
+//   pasteList.value = pasteJson
 }
 
 // 启动加载数据

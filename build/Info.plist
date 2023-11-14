@@ -1,7 +1,7 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
     <dict>
-        <key>CFBundlePackageType</key>
+        key>CFBundlePackageType</key>
         <string>APPL</string>
         <key>CFBundleName</key>
         <string>PastePlus</string>
@@ -22,12 +22,8 @@
         <key>NSHighResolutionCapable</key>
         <string>true</string>
         <key>NSHumanReadableCopyright</key>
-        <string></string>
+        <string>© 2023- xingcxb . All rights reserved.</string>
         <key>NSAppleEventsUsageDescription</key>
         <string>PastePlus需要自动化控制权限来实现其功能。</string>
-        <key>NSAutomatedInputEventSystemUsageDescription</key>
-        <string>PastePlus需要自动化控制权限来实现其功能。</string>
-        <key>NSAppleEventsUsageDescription</key>
-        <string>PastePlus需要辅助功能访问权限来实现其功能。</string>
     </dict>
 </plist>
