@@ -5,6 +5,8 @@ import (
 	"PastePlus/core/api/customEvents"
 	"PastePlus/core/basic/common"
 	"PastePlus/core/kit"
+	"PastePlus/core/kit/pid"
+	"PastePlus/core/plugin/dialogKit"
 	"PastePlus/core/window/hook"
 	"fmt"
 	"github.com/go-vgo/robotgo"
@@ -21,7 +23,13 @@ var (
 
 // MainWindow 主窗口
 func MainWindow(app *application.App) {
-	actionPid := robotgo.GetPid()
+	fmt.Println("-----当前激活的窗口的Pid", robotgo.GetActive())
+	//actionPid = robotgo.GetPid()
+	actionPid, err := pid.GetPid()
+	if err != nil {
+		dialogKit.PackageTipsDialog(dialogKit.Warning, "错误", "获取当前激活的窗口的Pid失败")
+		return
+	}
 	fmt.Println("当前激活的窗口的Pid", actionPid)
 	if w, ok := app.GetWindowByName(common.MainWindowName).(*application.WebviewWindow); ok {
 		// 判断如果当前的窗口已经存在，则显示
@@ -67,7 +75,7 @@ func MainWindow(app *application.App) {
 			},
 		},
 		//AlwaysOnTop:   true,                        // 窗口置顶，该操作不会让其它程序失去焦点
-		Focused:       false,                       // 窗口失去焦点
+		Focused:       true,                        // 窗口失去焦点
 		DisableResize: true,                        // 禁止窗口缩放
 		URL:           common.MainWindowContentUrl, // 设置窗口内容
 		Width:         mainWindowWidth,             // 设置宽度
@@ -90,7 +98,7 @@ func MainWindow(app *application.App) {
 		mainWindow.SetAbsolutePosition(0, -mainWindowHeight)
 	}
 	// 设置为显示聚焦
-	//mainWindow.Show().Focus()
+	mainWindow.Show().Focus()
 	mainWindow.SetAlwaysOnTop(true)
 	// 强制刷新
 	mainWindow.ForceReload()

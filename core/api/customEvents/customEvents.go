@@ -45,7 +45,7 @@ func FindPasteHistory(app *application.App) {
 			pasteVueList = append(pasteVueList, pasteVue)
 		}
 		pastesJsonByte, err := json.Marshal(pasteVueList)
-		fmt.Println("序列化后的数据：", string(pastesJsonByte))
+		//fmt.Println("序列化后的数据：", string(pastesJsonByte))
 		if err != nil {
 			dialogKit.PackageTipsDialog(dialogKit.Warning, "错误", "序列化历史剪贴板数据失败")
 			return
@@ -104,8 +104,6 @@ func HandleCardDoubleClick(app *application.App, window *application.WebviewWind
 		window.Close()
 		// 格式化输出
 		pasteContent := formatContent(pasteData.Content, pasteData.Type)
-		fmt.Println("要释放的数据：", pasteContent)
-		fmt.Println("要接受数据的pid：", actionPid)
 		if actionPid != 0 {
 			pidExists, err := robotgo.PidExists(actionPid)
 			if err != nil || !pidExists {
@@ -137,7 +135,7 @@ func HandleCardDoubleClick(app *application.App, window *application.WebviewWind
 // formatContent 格式化输出数据
 /*
  * @param contentByte 原始数据
- * @param typeStr 数据类型cmd =
+ * @param typeStr 数据类型
  * @return string 格式化后的数据
  */
 func formatContent(contentByte []byte, typeStr string) string {

@@ -3,7 +3,7 @@ module PastePlus
 go 1.21
 
 require (
-	github.com/go-vgo/robotgo v1.0.0-rc2.1
+	github.com/go-vgo/robotgo v0.110.0
 	github.com/mattn/go-sqlite3 v1.14.18
 	github.com/ncruces/zenity v0.10.10
 	github.com/pkg/browser v0.0.0-20210911075715-681adbf594b8
