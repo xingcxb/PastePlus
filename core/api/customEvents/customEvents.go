@@ -4,6 +4,7 @@ import "C"
 import (
 	"PastePlus/core/basic/common"
 	"PastePlus/core/kit"
+	"PastePlus/core/kit/boot"
 	"PastePlus/core/plugin/db"
 	"PastePlus/core/plugin/dialogKit"
 	"encoding/base64"
@@ -17,6 +18,39 @@ import (
 	"os/exec"
 	"runtime"
 )
+
+// HandleCleanAllHistoryData 清空所有历史剪贴板自定义事件
+func HandleCleanAllHistoryData(app *application.App) {
+	app.Events.On(common.EventsHandleCleanAllPasteHistoryToCore, func(e *application.WailsEvent) {
+		_, err := db.ResetPasteHistoryData()
+		if err != nil {
+			dialogKit.PackageTipsDialog(dialogKit.Warning, "错误", "清空历史剪贴板数据失败")
+			return
+		}
+		dialogKit.PackageTipsDialog(dialogKit.Info, "成功", "清空历史剪贴板数据成功")
+	})
+}
+
+// SetBootUp 设置开机启动自定义事件
+/*
+ * @param app app基础
+ */
+func SetBootUp(app *application.App) {
+	app.Events.On(common.EventsHandleBootUpToCore, func(e *application.WailsEvent) {
+		// 设置开机启动
+		value, err := boot.SetAppBootUp()
+		fmt.Println("设置开机启动结果：", value, err)
+		app.Events.Emit(&application.WailsEvent{
+			Name: common.EventsHandleBootUpToFrontend,
+			Data: value,
+		})
+		if err != nil {
+			dialogKit.PackageTipsDialog(dialogKit.Warning, "错误", "设置开机启动失败")
+		} else {
+			dialogKit.PackageTipsDialog(dialogKit.Info, "成功", "设置开机启动成功")
+		}
+	})
+}
 
 // FindPasteHistory 查找历史剪贴板自定义事件
 /*
@@ -110,7 +144,7 @@ func HandleCardDoubleClick(app *application.App, window *application.WebviewWind
 				fmt.Println("查询程序是否存在失败", err.Error())
 				return
 			}
-			// 如果上一个应用的pid不是程序自身，那么切换到下一个程序聚焦MilliSleepMilliSleep
+			// 如果上一个应用的pid不是程序自身，那么切换到下一个程序聚焦
 			fmt.Println(robotgo.FindName(actionPid))
 			err = activeWindow(actionPid) // robotgo.ActivePid(actionPid)
 			if err != nil {

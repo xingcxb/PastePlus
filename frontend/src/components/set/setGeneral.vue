@@ -7,7 +7,7 @@
       justify="end"
       labelAlign="right">
     <a-form-item label="启动">
-      <a-checkbox v-model:checked="bootUp" class="formStyle">开机后启动 PastePlus</a-checkbox>
+      <a-checkbox v-model:checked="bootUp" @change="handleBootUp" class="formStyle">开机后启动 PastePlus</a-checkbox>
     </a-form-item>
     <a-form-item label="集成">
       <a-checkbox v-model:checked="pasteText" class="formStyle">粘贴为纯文本</a-checkbox>
@@ -22,7 +22,7 @@
           :marks="marks"
           :step="null"
           :value="sliderValue"
-          @change="handleChange"
+          @change="handleSliderChange"
           :tooltipOpen=false
           v-model:value="historyCapacity">
       </a-slider>
@@ -30,7 +30,7 @@
   </a-form>
   <a-row>
     <a-col :offset="10">
-      <a-button>清除所有记录</a-button>
+      <a-button @click="cleanAllPasteHistory">清除所有记录</a-button>
     </a-col>
   </a-row>
   <a-row style="margin-top: 30px">
@@ -64,9 +64,23 @@ const marks = {
 }
 
 // 限制滑块刻度选择
-function handleChange(value) {
+function handleSliderChange(value) {
   sliderValue.value = parseInt(value);
 }
+
+// 操作开机启动
+function handleBootUp(value) {
+  wails.Events.Emit({name: "handleBootUpToCore", Data: value})
+  wails.Events.On("handleBootUpToFrontend", (data) => {
+    bootUp.value = data
+  })
+}
+
+// 清除所有记录
+function cleanAllPasteHistory(){
+  wails.Events.Emit({name: "cleanAllPasteHistoryToCore"})
+}
+
 </script>
 <style scoped>
 .formStyle {

@@ -9,9 +9,9 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "ant-design-vue": "^4.0.3",
-    "antd": "^5.10.0",
-    "vue": "^3.3.4",
+    "ant-design-vue": "^4.0.7",
+    "antd": "^5.11.1",
+    "vue": "^3.3.8",
     "vue-router": "^4.2.5"
   },
   "devDependencies": {

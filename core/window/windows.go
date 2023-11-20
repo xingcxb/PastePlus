@@ -8,7 +8,6 @@ import (
 	"PastePlus/core/kit/pid"
 	"PastePlus/core/plugin/dialogKit"
 	"PastePlus/core/window/hook"
-	"fmt"
 	"github.com/go-vgo/robotgo"
 	"github.com/wailsapp/wails/v3/pkg/application"
 	"runtime"
@@ -23,19 +22,14 @@ var (
 
 // MainWindow 主窗口
 func MainWindow(app *application.App) {
-	fmt.Println("-----当前激活的窗口的Pid", robotgo.GetActive())
-	//actionPid = robotgo.GetPid()
 	actionPid, err := pid.GetPid()
 	if err != nil {
 		dialogKit.PackageTipsDialog(dialogKit.Warning, "错误", "获取当前激活的窗口的Pid失败")
 		return
 	}
-	fmt.Println("当前激活的窗口的Pid", actionPid)
 	if w, ok := app.GetWindowByName(common.MainWindowName).(*application.WebviewWindow); ok {
 		// 判断如果当前的窗口已经存在，则显示
-		fmt.Println("当前激活的窗口的Pid", actionPid)
 		actionPid = kit.CheckPid(robotgo.GetPid(), app.GetPID())
-		fmt.Println("判断后激活窗口的Pid", actionPid)
 		w.Show().Focus()
 		return
 	}
@@ -147,12 +141,18 @@ func SettingsWindow(app *application.App, url string) {
 		Width:         600,  // 设置宽度
 		Height:        500,  // 设置高度
 	})
+	// 绑定自定义事件
+	// 绑定设置程序自动启动
+	customEvents.SetBootUp(app)
+	// 绑定清理粘贴板数据
+	customEvents.HandleCleanAllHistoryData(app)
+
 	// 设置窗口位置居中
 	settingsWindow.Center()
 	// 设置为显示聚焦
 	settingsWindow.Show().Focus()
 	// 窗口失去焦点时关闭窗口
-	hook.WindowLostFocusClose(settingsWindow)
+	//hook.WindowLostFocusClose(settingsWindow)
 	// 窗口关闭时关闭窗口
 	hook.WindowClose(settingsWindow)
 	return

@@ -99,6 +99,23 @@ func FindAllConfig() []common.PasteConfig {
 	return pasteConfigList
 }
 
+// ResetPasteHistoryData 重置剪贴板历史数据
+func ResetPasteHistoryData() (bool, error) {
+	// 删除所有的数据
+	sqlStm := "DELETE FROM pasteHistory"
+	_, err := sqlite3Db.Exec(sqlStm)
+	if err != nil {
+		return false, err
+	}
+	// 重置id
+	sqlStm = "UPDATE sqlite_sequence SET seq = 0 WHERE name = 'pasteHistory'"
+	_, err = sqlite3Db.Exec(sqlStm)
+	if err != nil {
+		return false, err
+	}
+	return true, nil
+}
+
 // FindPasteListByGTDate 指定日期查询大于当前日期的数据
 /*
  * @param gtDate 最小时间

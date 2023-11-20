@@ -12,5 +12,3 @@ func CheckPid(upPid, appPid int) int {
 		return upPid
 	}
 }
-
-// 使用robotgo 获取当前选择器中的第一个应用的pid
