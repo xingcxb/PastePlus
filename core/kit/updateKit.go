@@ -66,7 +66,7 @@ func updateApp(releaseInfo common.ReleaseInfo, progress zenity.ProgressDialog) {
 	// 下载地址
 	url := ""
 	// 文件名称
-	fileName := "PastePlus"
+	fileName := basic.AppName
 	// 获取系统类型
 	sysType := runtime.GOOS
 	switch sysType {

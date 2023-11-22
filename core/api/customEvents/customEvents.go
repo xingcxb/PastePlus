@@ -19,6 +19,27 @@ import (
 	"runtime"
 )
 
+// LoadPasteConfig 加载配置文件
+func LoadPasteConfig(app *application.App) {
+	app.Events.On(common.EventsHandLoadPasteConfigToCore, func(e *application.WailsEvent) {
+		// 获取配置信息
+		configs, err := db.FindAllConfig()
+		if err != nil {
+			return
+		}
+		configData := make(map[string]string, 0)
+		for _, config := range configs {
+			configData[config.Key] = config.Value
+		}
+		fmt.Println("=====>", configData)
+		//marshal, _ := json.Marshal(configs)
+		app.Events.Emit(&application.WailsEvent{
+			Name: common.EventsHandLoadPasteConfigToFrontend,
+			Data: configData,
+		})
+	})
+}
+
 // HandleCleanAllHistoryData 清空所有历史剪贴板自定义事件
 func HandleCleanAllHistoryData(app *application.App) {
 	app.Events.On(common.EventsHandleCleanAllPasteHistoryToCore, func(e *application.WailsEvent) {

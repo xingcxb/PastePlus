@@ -30,4 +30,6 @@ const (
 	EventsHandleBootUpToCore               = "handleBootUpToCore"              // 开机启动事件名称，从页面传递到go
 	EventsHandleBootUpToFrontend           = "handleBootUpToFrontend"          // 开机启动事件名称，从go传递到页面
 	EventsHandleCleanAllPasteHistoryToCore = "cleanAllPasteHistoryToCore"      // 清空所有历史剪贴板数据，从页面传递到go
+	EventsHandLoadPasteConfigToCore        = "loadPasteConfigToCore"           // 加载配置文件，从页面传递到go
+	EventsHandLoadPasteConfigToFrontend    = "loadPasteConfigToFrontend"       // 加载配置文件，从go传递到页面
 )

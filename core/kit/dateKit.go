@@ -66,3 +66,28 @@ func FormatWeChatTimeStr(chatTimeStr string) string {
 	// 其它,直接返回 "YYYY/MM/DD HH:MM"
 	return fmt.Sprintf("%04d/%02d/%02d %02d:%02d", year, month, day, hour, minute)
 }
+
+// GetDateByTimeUnit 通过时间单位获取到具体的时间
+/*
+ * @param timeUnit 时间单位
+ */
+func GetDateByTimeUnit(timeUnit string) string {
+	// 逆推天数，默认7天
+	reverseDay := -7
+	switch timeUnit {
+	case "天":
+		reverseDay = -1
+	case "周":
+		reverseDay = -7
+	case "月":
+		// 懒得去理会，就30天吧
+		reverseDay = -30
+	case "无限":
+		return ""
+	}
+	offsetDay, err := dateKit.OffsetDay(time.Now(), reverseDay)
+	if err != nil {
+		return ""
+	}
+	return dateKit.FormatDate(offsetDay)
+}

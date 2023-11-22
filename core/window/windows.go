@@ -146,6 +146,8 @@ func SettingsWindow(app *application.App, url string) {
 	customEvents.SetBootUp(app)
 	// 绑定清理粘贴板数据
 	customEvents.HandleCleanAllHistoryData(app)
+	// 绑定加载配置文件
+	customEvents.LoadPasteConfig(app)
 
 	// 设置窗口位置居中
 	settingsWindow.Center()

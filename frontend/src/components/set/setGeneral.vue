@@ -41,18 +41,18 @@
   </a-row>
 </template>
 <script setup>
-import {ref} from 'vue';
+import {onMounted, ref} from 'vue';
 
 // 是否开机启动
-const bootUp = ref(false);
+let bootUp = ref(false);
 // 是否粘贴为纯文本
-const pasteText = ref(false);
+let pasteText = ref(false);
 // 是否启动音效
-const sound = ref(false);
+let sound = ref(false);
 // 是否在菜单栏显示图标
-const menuIcon = ref(false);
+let menuIcon = ref(false);
 // 历史记录容量
-const historyCapacity = ref("周");
+let historyCapacity = ref("周");
 // 滑块值
 let sliderValue = ref(35);
 // 滑块刻度
@@ -66,13 +66,27 @@ const marks = {
 // 限制滑块刻度选择
 function handleSliderChange(value) {
   sliderValue.value = parseInt(value);
+  switch (value){
+    case 0:
+      historyCapacity.value = "天";
+      break;
+    case 35:
+      historyCapacity.value = "周";
+      break;
+    case 70:
+      historyCapacity.value = "月";
+      break;
+    case 100:
+      historyCapacity.value = "无限";
+      break;
+  }
 }
 
 // 操作开机启动
 function handleBootUp(value) {
   wails.Events.Emit({name: "handleBootUpToCore", Data: value})
   wails.Events.On("handleBootUpToFrontend", (data) => {
-    bootUp.value = data
+    bootUp.value = data.data
   })
 }
 
@@ -80,6 +94,36 @@ function handleBootUp(value) {
 function cleanAllPasteHistory(){
   wails.Events.Emit({name: "cleanAllPasteHistoryToCore"})
 }
+
+// 加载配置
+function loadPasteConfig(){
+  wails.Events.Emit({name: "loadPasteConfigToCore"})
+  wails.Events.On("loadPasteConfigToFrontend", (data) => {
+    console.log(data.data)
+    bootUp.value = data.data.bootUp
+    sound.value = data.data.sound
+    historyCapacity.value = data.data.historyCapacity
+    switch (data.data.historyCapacity){
+      case "天":
+        sliderValue.value = 0;
+        break;
+      case "周":
+        sliderValue.value = 35;
+        break;
+      case "月":
+        sliderValue.value = 70;
+        break;
+      case "无限":
+        sliderValue.value = 100;
+        break;
+    }
+  })
+}
+
+// 页面打开时监听数据
+onMounted(()=>{
+  loadPasteConfig()
+})
 
 </script>
 <style scoped>

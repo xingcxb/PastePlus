@@ -20,9 +20,15 @@ type PasteHistoryVue struct {
 	CreatedAt   string `json:"created_at"`   // CreatedAt 历史记录创建时间
 }
 
+// PasteConfigVue 基础配置信息结构体提供给vue使用
+type PasteConfigVue struct {
+	Key   string `json:"key"`   // Key 配置键
+	Value string `json:"value"` // Value 配置值
+}
+
 // PasteConfig 基础配置信息
 type PasteConfig struct {
-	Id    int64 `json:"id"`    // ID 配置ID
-	Key   bool  `json:"key"`   // 键
-	Value bool  `json:"value"` // 值
+	Id    int64  `json:"id"`    // ID 配置ID
+	Key   string `json:"key"`   // 键
+	Value string `json:"value"` // 值
 }

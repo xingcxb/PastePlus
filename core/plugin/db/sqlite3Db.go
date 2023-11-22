@@ -12,6 +12,7 @@ import (
 	"github.com/xingcxb/goKit/core/dateKit"
 	"github.com/xingcxb/goKit/core/fileKit"
 	"github.com/xingcxb/goKit/core/strKit"
+	"log"
 	"os"
 	"time"
 )
@@ -62,6 +63,10 @@ func InitDb() {
 			dialogKit.PackageTipsDialog(dialogKit.Error, "错误", "创建数据库配置表失败")
 			return
 		}
+		if err = basicConfigInit(sqlite3Db); err != nil {
+			dialogKit.PackageTipsDialog(dialogKit.Error, "错误", "初始化数据库配置表失败")
+			return
+		}
 	} else {
 		// 当文件存在的时候直接打开数据库文件
 		db, err := sql.Open("sqlite3", filePath)
@@ -75,6 +80,26 @@ func InitDb() {
 	Sqlite3Status = true
 }
 
+// 初始化基础配置表
+func basicConfigInit(sqlite3Db *sql.DB) error {
+	// 初始化配置表
+	sqlStmt := "INSERT INTO pasteConfig(key, value) VALUES(?, ?)"
+	// 设置启动状态为false
+	_, err := sqlite3Db.Exec(sqlStmt, "bootUp", "false")
+	if err != nil {
+		return err
+	}
+	_, err = sqlite3Db.Exec(sqlStmt, "sound", "false")
+	if err != nil {
+		return err
+	}
+	_, err = sqlite3Db.Exec(sqlStmt, "historyCapacity", "周")
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
 // UpConfig 更新配置信息
 func UpConfig(config common.PasteConfig) bool {
 
@@ -82,13 +107,13 @@ func UpConfig(config common.PasteConfig) bool {
 }
 
 // FindAllConfig 获取所有的配置信息数据
-func FindAllConfig() []common.PasteConfig {
+func FindAllConfig() ([]common.PasteConfig, error) {
 	sqlStms := "SELECT * FROM pasteConfig"
 	rows, err := sqlite3Db.Query(sqlStms)
 	if err != nil {
-		dialogKit.PackageTipsDialog(dialogKit.Error, "错误", "查询数据库配置表失败")
-		fmt.Println("查询数据库配置表失败", err.Error())
-		return nil
+		//dialogKit.PackageTipsDialog(dialogKit.Error, "错误", "查询数据库配置表失败")
+		//fmt.Println("查询数据库配置表失败", err.Error())
+		return nil, err
 	}
 	var pasteConfigList []common.PasteConfig
 	for rows.Next() {
@@ -96,7 +121,22 @@ func FindAllConfig() []common.PasteConfig {
 		_ = rows.Scan(&pasteConfig.Id, &pasteConfig.Key, &pasteConfig.Value)
 		pasteConfigList = append(pasteConfigList, pasteConfig)
 	}
-	return pasteConfigList
+	return pasteConfigList, nil
+}
+
+func FindConfigByKey(key string) (common.PasteConfig, error) {
+	pasteConfig := common.PasteConfig{}
+	sqlStms := "SELECT * FROM pasteConfig WHERE key = ?"
+	rows, err := sqlite3Db.Query(sqlStms, key)
+	if err != nil {
+		//dialogKit.PackageTipsDialog(dialogKit.Error, "错误", "查询数据库配置表失败")
+		//fmt.Println("查询数据库配置表失败", err.Error())
+		return pasteConfig, err
+	}
+	for rows.Next() {
+		_ = rows.Scan(&pasteConfig.Id, &pasteConfig.Key, &pasteConfig.Value)
+	}
+	return pasteConfig, nil
 }
 
 // ResetPasteHistoryData 重置剪贴板历史数据
@@ -124,6 +164,28 @@ func ResetPasteHistoryData() (bool, error) {
 func FindPasteListByGTDate(gtDate string) []common.PasteHistoryGo {
 	sqlStms := "SELECT * FROM pasteHistory WHERE created_at > ?"
 	rows, err := sqlite3Db.Query(sqlStms, strKit.Splicing(gtDate, " 00:00:00"))
+	if err != nil {
+		dialogKit.PackageTipsDialog(dialogKit.Error, "错误", "查询数据库存储消息表失败")
+		fmt.Println("查询数据库存储消息表失败", err.Error())
+		return nil
+	}
+	var pasteHistoryList []common.PasteHistoryGo
+	for rows.Next() {
+		var pasteHistory common.PasteHistoryGo
+		_ = rows.Scan(&pasteHistory.Id, &pasteHistory.FromApp, &pasteHistory.Content, &pasteHistory.Type, &pasteHistory.CreatedAt)
+		pasteHistoryList = append(pasteHistoryList, pasteHistory)
+	}
+	return pasteHistoryList
+}
+
+// FindPasteListByLTDate 指定日期查询小于当前日期的数据
+/*
+ * @param gtDate 最小时间
+ * @return 返回数据集合
+ */
+func FindPasteListByLTDate(gtDate string) []common.PasteHistoryGo {
+	sqlStms := "SELECT * FROM pasteHistory WHERE created_at < ?"
+	rows, err := sqlite3Db.Query(sqlStms, strKit.Splicing(gtDate, " 23:59:59"))
 	if err != nil {
 		dialogKit.PackageTipsDialog(dialogKit.Error, "错误", "查询数据库存储消息表失败")
 		fmt.Println("查询数据库存储消息表失败", err.Error())
@@ -252,4 +314,18 @@ func SaveOrUpdatePaste(data common.PasteHistoryGo) bool {
 		}
 		return true
 	}
+}
+
+// DeletePasteById 通过id删除数据
+/*
+ * @param id 数据id
+ */
+func DeletePasteById(id int64) error {
+	sqlStm := "DELETE FROM pasteHistory WHERE id = ?"
+	_, err := sqlite3Db.Exec(sqlStm, id)
+	if err != nil {
+		log.Print("删除数据失败", err.Error())
+		return err
+	}
+	return nil
 }

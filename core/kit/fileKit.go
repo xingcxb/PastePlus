@@ -37,3 +37,16 @@ func CreateLazyFile(filePath string) error {
 	defer file.Close()
 	return nil
 }
+
+// PlaySound 播放声音
+/*
+ * @param soundType string 声音类型
+ */
+func PlaySound(soundType string) {
+	switch soundType {
+	case "copy":
+	// 播放复制声音
+	case "paste":
+		// 播放粘贴声音
+	}
+}

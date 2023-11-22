@@ -1,4 +1,4 @@
-// Package api 设置部分交互接口
+// Package bindings 设置部分交互接口
 package bindings
 
 import (
