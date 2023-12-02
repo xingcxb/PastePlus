@@ -4,7 +4,8 @@
 package pid
 
 import (
-	"fmt"
+	"PastePlus/core/basic/common"
+	"go.uber.org/zap"
 	"os/exec"
 	"strconv"
 	"strings"
@@ -16,7 +17,7 @@ func GetPid() int {
 	cmd := exec.Command("powershell", "-Command", psScript)
 	output, err := cmd.Output()
 	if err != nil {
-		fmt.Println("Error:", err)
+		common.Logger.Error("获取pid失败", zap.Error(err))
 		return 0
 	}
 
@@ -26,10 +27,9 @@ func GetPid() int {
 	// 将字符串转换为 int
 	pid, err := strconv.Atoi(pidStr)
 	if err != nil {
-		fmt.Println("Error converting PID to integer:", err)
+		common.Logger.Error("Error converting PID to integer:", zap.Error(err))
 		return 0
 	}
-
-	fmt.Printf("Active Window PID: %d\n", pid)
+	common.Logger.Info("Active Window PID: " + pidStr)
 	return pid
 }

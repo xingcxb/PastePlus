@@ -4,10 +4,11 @@ package hook
 
 import (
 	"PastePlus/core/basic/common"
+	"PastePlus/core/kit"
 	"PastePlus/core/plugin/db"
 	"context"
-	"fmt"
 	"github.com/xingcxb/goKit/core/dateKit"
+	"go.uber.org/zap"
 	"golang.design/x/clipboard"
 )
 
@@ -21,7 +22,7 @@ func hookClipboard(ctx context.Context) {
 	// 初始化剪切板包
 	err := clipboard.Init()
 	if err != nil {
-		fmt.Println("剪切板初始化失败", err)
+		common.Logger.Error("剪切板初始化失败", zap.Error(err))
 		return
 	}
 	// 读取剪切板数据
@@ -39,7 +40,7 @@ func hookClipboard(ctx context.Context) {
 			return
 		case dataImage, ok := <-chImage:
 			if !ok {
-				fmt.Println("剪切板监听失败")
+				common.Logger.Info("剪切板图片监听失败")
 				return
 			}
 			// 目前这里存在一个bug，如果使用复制快捷键的话，并不认可
@@ -50,7 +51,7 @@ func hookClipboard(ctx context.Context) {
 			pasteData.Content = dataImage
 		case dataText, ok := <-chText:
 			if !ok {
-				fmt.Println("剪切板监听失败")
+				common.Logger.Info("剪切板文本监听失败")
 				return
 			}
 			// 剥离数据
@@ -68,6 +69,7 @@ func hookClipboard(ctx context.Context) {
 		// 如果不存在那么就需要重新构建数据
 		pasteData.CreatedAt = dateKit.Now()
 		db.SaveOrUpdatePaste(pasteData)
-		fmt.Println("Clipboard changed:", string(pasteData.Content))
+		kit.PlaySound("copy")
+		common.Logger.Info("Clipboard changed:", zap.String("%v", string(pasteData.Content)))
 	}
 }

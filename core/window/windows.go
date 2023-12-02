@@ -10,7 +10,9 @@ import (
 	"PastePlus/core/window/hook"
 	"github.com/go-vgo/robotgo"
 	"github.com/wailsapp/wails/v3/pkg/application"
+	"github.com/xingcxb/goKit/core/strKit"
 	"runtime"
+	"strconv"
 )
 
 var (
@@ -33,6 +35,7 @@ func MainWindow(app *application.App) {
 		w.Show().Focus()
 		return
 	}
+	common.Logger.Info(strKit.Splicing("当前激活的窗口的Pid：", strconv.Itoa(actionPid)))
 	actionPid = kit.CheckPid(robotgo.GetPid(), app.GetPID())
 	// 获取屏幕，该函数调用必须在app.Run()之后
 	screen, _ := app.GetPrimaryScreen()

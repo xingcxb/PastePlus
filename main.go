@@ -3,6 +3,8 @@ package main
 import (
 	"PastePlus/core/api/bindings"
 	"PastePlus/core/basic"
+	"PastePlus/core/basic/common"
+	"PastePlus/core/kit"
 	"PastePlus/core/plugin/cron"
 	"PastePlus/core/plugin/db"
 	"PastePlus/core/window/bindHotKey"
@@ -11,7 +13,7 @@ import (
 	"embed"
 	_ "embed"
 	"github.com/wailsapp/wails/v3/pkg/application"
-	"log"
+	"go.uber.org/zap"
 )
 
 //go:embed frontend/dist
@@ -56,6 +58,8 @@ func main() {
 
 	// 用于追加插件
 	go func() {
+		// 初始化日志
+		kit.InitLog()
 		// 初始化数据库
 		db.InitDb()
 		if !db.Sqlite3Status {
@@ -72,6 +76,6 @@ func main() {
 	err := app.Run()
 
 	if err != nil {
-		log.Fatal(err)
+		common.Logger.Error("程序启动失败", zap.Error(err))
 	}
 }

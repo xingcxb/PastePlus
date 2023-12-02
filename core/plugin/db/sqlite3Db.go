@@ -7,12 +7,11 @@ import (
 	"PastePlus/core/plugin/dialogKit"
 	"context"
 	"database/sql"
-	"fmt"
 	_ "github.com/mattn/go-sqlite3"
 	"github.com/xingcxb/goKit/core/dateKit"
 	"github.com/xingcxb/goKit/core/fileKit"
 	"github.com/xingcxb/goKit/core/strKit"
-	"log"
+	"go.uber.org/zap"
 	"os"
 	"time"
 )
@@ -39,14 +38,14 @@ func InitDb() {
 		// 当文件不存在的时候创建数据库文件，并创建表
 		err := kit.CreateLazyFile(filePath)
 		if err != nil {
+			common.Logger.Error("创建数据库文件失败", zap.Error(err))
 			dialogKit.PackageTipsDialog(dialogKit.Error, "错误", "创建数据库文件失败")
-			fmt.Println("创建数据库文件失败", err)
 			return
 		}
 		sqlite3Db, err = sql.Open("sqlite3", filePath)
 		if err != nil {
+			common.Logger.Error("数据库初始化失败", zap.Error(err))
 			dialogKit.PackageTipsDialog(dialogKit.Error, "错误", "数据库初始化失败")
-			fmt.Println("数据库初始化失败", err)
 			return
 		}
 		// 创建存储数据表
@@ -111,8 +110,6 @@ func FindAllConfig() ([]common.PasteConfig, error) {
 	sqlStms := "SELECT * FROM pasteConfig"
 	rows, err := sqlite3Db.Query(sqlStms)
 	if err != nil {
-		//dialogKit.PackageTipsDialog(dialogKit.Error, "错误", "查询数据库配置表失败")
-		//fmt.Println("查询数据库配置表失败", err.Error())
 		return nil, err
 	}
 	var pasteConfigList []common.PasteConfig
@@ -165,8 +162,8 @@ func FindPasteListByGTDate(gtDate string) []common.PasteHistoryGo {
 	sqlStms := "SELECT * FROM pasteHistory WHERE created_at > ?"
 	rows, err := sqlite3Db.Query(sqlStms, strKit.Splicing(gtDate, " 00:00:00"))
 	if err != nil {
+		common.Logger.Error("查询数据库存储消息表失败", zap.Error(err))
 		dialogKit.PackageTipsDialog(dialogKit.Error, "错误", "查询数据库存储消息表失败")
-		fmt.Println("查询数据库存储消息表失败", err.Error())
 		return nil
 	}
 	var pasteHistoryList []common.PasteHistoryGo
@@ -187,8 +184,8 @@ func FindPasteListByLTDate(gtDate string) []common.PasteHistoryGo {
 	sqlStms := "SELECT * FROM pasteHistory WHERE created_at < ?"
 	rows, err := sqlite3Db.Query(sqlStms, strKit.Splicing(gtDate, " 23:59:59"))
 	if err != nil {
+		common.Logger.Error("查询数据库存储消息表失败", zap.Error(err))
 		dialogKit.PackageTipsDialog(dialogKit.Error, "错误", "查询数据库存储消息表失败")
-		fmt.Println("查询数据库存储消息表失败", err.Error())
 		return nil
 	}
 	var pasteHistoryList []common.PasteHistoryGo
@@ -212,8 +209,8 @@ func FindPasteListByDate(beginDate, endDate string) []common.PasteHistoryGo {
 	sqlStms := "SELECT * FROM pasteHistory WHERE created_at BETWEEN ? AND ? ORDER BY created_at DESC"
 	rows, err := sqlite3Db.Query(sqlStms, beginTime, endTime)
 	if err != nil {
+		common.Logger.Error("查询数据库存储消息表失败", zap.Error(err))
 		dialogKit.PackageTipsDialog(dialogKit.Error, "错误", "查询数据库存储消息表失败")
-		fmt.Println("查询数据库存储消息表失败", err.Error())
 		return nil
 	}
 	var pasteHistoryList []common.PasteHistoryGo
@@ -235,8 +232,8 @@ func FindPasteById(id int) common.PasteHistoryGo {
 	sqlStms := "SELECT * FROM pasteHistory WHERE id = ?"
 	rows, err := sqlite3Db.Query(sqlStms, id)
 	if err != nil {
+		common.Logger.Error("查询数据库存储消息表失败", zap.Error(err))
 		dialogKit.PackageTipsDialog(dialogKit.Error, "错误", "查询数据库存储消息表失败")
-		fmt.Println("查询数据库存储消息表失败", err.Error())
 		return pasteHistory
 	}
 	for rows.Next() {
@@ -254,8 +251,8 @@ func FindPasteDataByContent(content []byte) common.PasteHistoryGo {
 	sqlStm := "SELECT * FROM pasteHistory WHERE content = ? ORDER BY created_at DESC LIMIT 1"
 	rows, err := sqlite3Db.Query(sqlStm, content)
 	if err != nil {
+		common.Logger.Error("查询数据库存储消息表失败", zap.Error(err))
 		dialogKit.PackageTipsDialog(dialogKit.Error, "错误", "查询数据库存储消息表失败")
-		fmt.Println("查询数据库存储消息表失败", err.Error())
 		return common.PasteHistoryGo{}
 	}
 	var pasteHistoryList []common.PasteHistoryGo
@@ -275,8 +272,8 @@ func FindPasteDateByAll() []common.PasteHistoryGo {
 	sqlStm := "SELECT * FROM pasteHistory ORDER BY created_at DESC"
 	rows, err := sqlite3Db.Query(sqlStm)
 	if err != nil {
+		common.Logger.Error("查询数据库存储消息表失败", zap.Error(err))
 		dialogKit.PackageTipsDialog(dialogKit.Error, "错误", "查询数据库存储消息表失败")
-		fmt.Println("查询数据库存储消息表失败", err.Error())
 		return nil
 	}
 	var pasteHistoryList []common.PasteHistoryGo
@@ -298,8 +295,8 @@ func SaveOrUpdatePaste(data common.PasteHistoryGo) bool {
 		sqlStm := "INSERT INTO pasteHistory(from_app, content, type, created_at) VALUES(?, ?, ?, ?)"
 		_, err := sqlite3Db.Exec(sqlStm, data.FromApp, data.Content, data.Type, data.CreatedAt)
 		if err != nil {
+			common.Logger.Error("保存剪贴板数据失败", zap.Error(err))
 			dialogKit.PackageTipsDialog(dialogKit.Error, "错误", "保存剪贴板数据失败")
-			fmt.Println("保存剪贴板数据失败", err.Error())
 			return false
 		}
 		return true
@@ -308,8 +305,8 @@ func SaveOrUpdatePaste(data common.PasteHistoryGo) bool {
 		sqlStm := "UPDATE pasteHistory SET created_at = ? WHERE id = ?"
 		_, err := sqlite3Db.Exec(sqlStm, dateKit.Now(), data.Id)
 		if err != nil {
+			common.Logger.Error("更新剪贴板数据失败", zap.Error(err))
 			dialogKit.PackageTipsDialog(dialogKit.Error, "错误", "更新剪贴板数据失败")
-			fmt.Println("更新剪贴板数据失败", err.Error())
 			return false
 		}
 		return true
@@ -324,7 +321,7 @@ func DeletePasteById(id int64) error {
 	sqlStm := "DELETE FROM pasteHistory WHERE id = ?"
 	_, err := sqlite3Db.Exec(sqlStm, id)
 	if err != nil {
-		log.Print("删除数据失败", err.Error())
+		common.Logger.Error("删除数据失败", zap.Error(err))
 		return err
 	}
 	return nil

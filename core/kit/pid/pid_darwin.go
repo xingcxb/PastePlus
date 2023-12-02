@@ -3,7 +3,8 @@
 package pid
 
 import (
-	"fmt"
+	"PastePlus/core/basic/common"
+	"go.uber.org/zap"
 	"os/exec"
 	"strconv"
 	"strings"
@@ -15,7 +16,7 @@ func GetPid() (int, error) {
 	cmd := exec.Command("osascript", "-e", appleScript)
 	output, err := cmd.Output()
 	if err != nil {
-		fmt.Println("Error:", err)
+		common.Logger.Error("获取pid失败", zap.Error(err))
 		return 0, err
 	}
 	// 转换输出为字符串并去除可能的换行符
@@ -24,7 +25,7 @@ func GetPid() (int, error) {
 	// 将字符串转换为 int
 	pid, err := strconv.Atoi(pidStr)
 	if err != nil {
-		fmt.Println("Error converting PID to integer:", err)
+		common.Logger.Error("Error converting PID to integer", zap.Error(err))
 		return 0, err
 	}
 	return pid, nil

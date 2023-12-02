@@ -23,6 +23,18 @@
 
 ...
 
+## 编译
+
+- `macOS`
+
+  `wails wails3 task package:darwin`
+- `Windows`
+
+  `wails wails3 task package:windows`
+- `Linux`
+
+  `wails wails3 task package:linux`
+
 ## 安装
 
 ### Windows

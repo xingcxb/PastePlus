@@ -1,9 +1,12 @@
 package common
 
 const (
-	Windows = "windows" // Windows
-	MacOS   = "darwin"  // macOS
-	Linux   = "linux"   // Linux
+	// Windows Windows系统
+	Windows = "windows"
+	// MacOS macOS系统
+	MacOS = "darwin"
+	// Linux Linux系统
+	Linux = "linux"
 )
 
 const (

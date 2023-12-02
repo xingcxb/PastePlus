@@ -1,6 +1,5 @@
 package customEvents
 
-import "C"
 import (
 	"PastePlus/core/basic/common"
 	"PastePlus/core/kit"
@@ -14,6 +13,7 @@ import (
 	"github.com/wailsapp/wails/v3/pkg/application"
 	"github.com/xingcxb/goKit/core/numKit"
 	"github.com/xingcxb/goKit/core/strKit"
+	"go.uber.org/zap"
 	"golang.design/x/clipboard"
 	"os/exec"
 	"runtime"
@@ -31,7 +31,7 @@ func LoadPasteConfig(app *application.App) {
 		for _, config := range configs {
 			configData[config.Key] = config.Value
 		}
-		fmt.Println("=====>", configData)
+		common.Logger.Info("加载配置文件", zap.String("configData", fmt.Sprintf("%v", configData)))
 		//marshal, _ := json.Marshal(configs)
 		app.Events.Emit(&application.WailsEvent{
 			Name: common.EventsHandLoadPasteConfigToFrontend,
@@ -60,12 +60,13 @@ func SetBootUp(app *application.App) {
 	app.Events.On(common.EventsHandleBootUpToCore, func(e *application.WailsEvent) {
 		// 设置开机启动
 		value, err := boot.SetAppBootUp()
-		fmt.Println("设置开机启动结果：", value, err)
+		common.Logger.Info("设置开机启动结果", zap.String("value", fmt.Sprintf("%v", value)), zap.Error(err))
 		app.Events.Emit(&application.WailsEvent{
 			Name: common.EventsHandleBootUpToFrontend,
 			Data: value,
 		})
 		if err != nil {
+			common.Logger.Error("设置开机启动失败", zap.Error(err))
 			dialogKit.PackageTipsDialog(dialogKit.Warning, "错误", "设置开机启动失败")
 		} else {
 			dialogKit.PackageTipsDialog(dialogKit.Info, "成功", "设置开机启动成功")
@@ -100,8 +101,8 @@ func FindPasteHistory(app *application.App) {
 			pasteVueList = append(pasteVueList, pasteVue)
 		}
 		pastesJsonByte, err := json.Marshal(pasteVueList)
-		//fmt.Println("序列化后的数据：", string(pastesJsonByte))
 		if err != nil {
+			common.Logger.Error("序列化历史剪贴板数据失败", zap.Error(err))
 			dialogKit.PackageTipsDialog(dialogKit.Warning, "错误", "序列化历史剪贴板数据失败")
 			return
 		}
@@ -162,19 +163,16 @@ func HandleCardDoubleClick(app *application.App, window *application.WebviewWind
 		if actionPid != 0 {
 			pidExists, err := robotgo.PidExists(actionPid)
 			if err != nil || !pidExists {
-				fmt.Println("查询程序是否存在失败", err.Error())
+				common.Logger.Error("查询程序是否存在失败", zap.Error(err))
 				return
 			}
 			// 如果上一个应用的pid不是程序自身，那么切换到下一个程序聚焦
-			fmt.Println(robotgo.FindName(actionPid))
 			err = activeWindow(actionPid) // robotgo.ActivePid(actionPid)
 			if err != nil {
-				fmt.Println("激活程序失败：", err.Error())
+				common.Logger.Error("激活程序失败", zap.Error(err))
 				dialogKit.PackageTipsDialog(dialogKit.Warning, "错误", strKit.Splicing("激活程序失败", err.Error()))
 				return
 			}
-			//dialogKit.PackageTipsDialog(dialogKit.Info, "成功", "激活程序成功")cmd =cmd = cmd =
-			fmt.Println("激活程序成功")
 			if pasteData.Type == "text" {
 				robotgo.MilliSleep(300)
 				robotgo.TypeStr(pasteContent)

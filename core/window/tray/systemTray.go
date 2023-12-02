@@ -3,9 +3,9 @@ package tray
 
 import (
 	"PastePlus/core/basic"
+	"PastePlus/core/basic/common"
 	"PastePlus/core/kit"
 	"PastePlus/core/window"
-	"fmt"
 	"github.com/pkg/browser"
 	"github.com/wailsapp/wails/v3/pkg/application"
 	"github.com/xingcxb/goKit/core/strKit"
@@ -44,7 +44,7 @@ func CreateSysTray(app *application.App) *application.Menu {
 	trayMenu.AddSeparator()
 	// 关于
 	trayMenu.Add("暂停").SetEnabled(false).OnClick(func(ctx *application.Context) {
-		fmt.Println("====>暂停功能")
+		common.Logger.Info("暂停监控剪切板功能")
 	})
 	trayMenu.Add("退出").OnClick(func(ctx *application.Context) {
 		app.Quit()
