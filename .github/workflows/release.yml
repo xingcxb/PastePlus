@@ -1,9 +1,8 @@
 name: PastePlus release action
 
 on:
-  create:
-    tags: # 发布 tag 时触发
-      - v*
+  release:
+    types: [created]
 
 jobs:
   jobs_version: # 获取当前软件释放的版本号
