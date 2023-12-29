@@ -273,6 +273,8 @@ tasks:
     cmds:
       - mkdir -p {{.BIN_DIR}}/{{.APP_NAME}}.app/Contents/{MacOS,Resources}
       - cp build/icons.icns {{.BIN_DIR}}/{{.APP_NAME}}.app/Contents/Resources
+      - cp Resources/Copy.mp3 {{.BIN_DIR}}/{{.APP_NAME}}.app/Contents/Resources
+      - cp Resources/Paste.mp3 {{.BIN_DIR}}/{{.APP_NAME}}.app/Contents/Resources
       - cp {{.BIN_DIR}}/{{.APP_NAME}} {{.BIN_DIR}}/{{.APP_NAME}}.app/Contents/MacOS
       - cp build/Info.plist {{.BIN_DIR}}/{{.APP_NAME}}.app/Contents
 

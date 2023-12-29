@@ -16,6 +16,7 @@ require (
 	github.com/xingcxb/goKit v0.2.14
 	go.uber.org/zap v1.26.0
 	golang.design/x/clipboard v0.7.0
+	golang.org/x/sys v0.14.0
 	gopkg.in/natefinch/lumberjack.v2 v2.2.1
 )
 
@@ -94,7 +95,6 @@ require (
 	golang.org/x/crypto v0.15.0 // indirect
 	golang.org/x/exp v0.0.0-20231006140011-7918f672742d // indirect
 	golang.org/x/net v0.18.0 // indirect
-	golang.org/x/sys v0.14.0 // indirect
 	gopkg.in/warnings.v0 v0.1.2 // indirect
 )
 

@@ -52,15 +52,16 @@ func CreateLazyFile(filePath string) error {
 func PlaySound(soundType string) {
 	// 获取当前运行目录
 	runPath := fileKit.GetCurrentAbPath()
+	// 向上回一层，资源文件目录和可执行文件目录在同一个目录下
+	runPath = filepath.Dir(runPath)
 	soundFilePath := ""
 	switch soundType {
 	case "copy":
 		// 播放复制声音
-		//soundFilePath = "./resources/Copy.aiff"
-		soundFilePath = strKit.Splicing(runPath, "/resources/Copy.mp3")
+		soundFilePath = strKit.Splicing(runPath, "/Resources/Copy.mp3")
 	case "paste":
 		// 播放粘贴声音
-		soundFilePath = strKit.Splicing(runPath, "/resources/Paste.mp3")
+		soundFilePath = strKit.Splicing(runPath, "/Resources/Paste.mp3")
 	}
 	// 打开 MP3 文件
 	f, err := os.Open(soundFilePath)
