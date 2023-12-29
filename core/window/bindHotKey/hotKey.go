@@ -2,6 +2,7 @@
 package bindHotKey
 
 import (
+	"PastePlus/core/basic/common"
 	"PastePlus/core/window"
 	hook "github.com/robotn/gohook"
 	"github.com/wailsapp/wails/v3/pkg/application"
@@ -22,6 +23,7 @@ func BindingGlobalHotkey(app *application.App) {
 			hotKeysCSV[0] = "ctrl"
 		}
 		hook.Register(hook.KeyDown, hotKeysCSV, func(e hook.Event) {
+			common.Logger.Info("按下快捷键")
 			// 启动窗口
 			window.MainWindow(app)
 		})

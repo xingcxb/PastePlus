@@ -60,7 +60,6 @@ func SetBootUp(app *application.App) {
 	app.Events.On(common.EventsHandleBootUpToCore, func(e *application.WailsEvent) {
 		// 设置开机启动
 		value, err := boot.SetAppBootUp()
-		common.Logger.Info("设置开机启动结果", zap.String("value", fmt.Sprintf("%v", value)), zap.Error(err))
 		app.Events.Emit(&application.WailsEvent{
 			Name: common.EventsHandleBootUpToFrontend,
 			Data: value,

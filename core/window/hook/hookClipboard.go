@@ -70,6 +70,6 @@ func hookClipboard(ctx context.Context) {
 		pasteData.CreatedAt = dateKit.Now()
 		db.SaveOrUpdatePaste(pasteData)
 		kit.PlaySound("copy")
-		common.Logger.Info("Clipboard changed:", zap.String("%v", string(pasteData.Content)))
+		//common.Logger.Info("Clipboard changed:", zap.String("%v", string(pasteData.Content)))
 	}
 }

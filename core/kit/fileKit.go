@@ -45,6 +45,22 @@ func CreateLazyFile(filePath string) error {
 	return nil
 }
 
+// InitOto 初始化oto上下文
+func InitOto() {
+	c, ready, err := oto.NewContext(&oto.NewContextOptions{
+		SampleRate:   44100, // 假设所有音频文件都是 44100 Hz
+		ChannelCount: 2,     // 假设所有音频文件都是立体声
+		Format:       2,     // 假设所有音频文件都是16位
+		BufferSize:   8192,
+	})
+	if err != nil {
+		common.Logger.Error("准备Oto上下文失败", zap.Error(err))
+		return
+	}
+	common.AudioContent = c
+	<-ready
+}
+
 // PlaySound 播放声音
 /*
  * @param soundType string 声音类型
@@ -76,20 +92,8 @@ func PlaySound(soundType string) {
 		common.Logger.Error("解码MP3文件失败", zap.Error(err))
 		return
 	}
-	// 准备 Oto 上下文
-	c, ready, err := oto.NewContext(&oto.NewContextOptions{
-		SampleRate:   d.SampleRate(),
-		ChannelCount: 2, // 假设是立体声
-		Format:       2, // 假设每个样本是16位
-		BufferSize:   8192,
-	})
-	if err != nil {
-		common.Logger.Error("准备Oto上下文失败", zap.Error(err))
-		return
-	}
-	<-ready
 	// 创建播放器
-	p := c.NewPlayer(d)
+	p := common.AudioContent.NewPlayer(d)
 	// 播放音频
 	p.Play()
 	time.Sleep(1 * time.Second)

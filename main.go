@@ -60,6 +60,8 @@ func main() {
 	go func() {
 		// 初始化日志
 		kit.InitLog()
+		// 初始化声音播放oto上下文
+		kit.InitOto()
 		// 初始化数据库
 		db.InitDb()
 		if !db.Sqlite3Status {
