@@ -1,0 +1,167 @@
+name: PastePlus release action
+
+on:
+  create:
+    tags: # 发布 tag 时触发
+      - v*
+
+jobs:
+  jobs_version: # 获取当前软件释放的版本号
+    name: Get version
+    runs-on: ubuntu-latest
+    env:
+      ACTIONS_STEP_DEBUG: true
+      ACTIONS_RUNNER_DEBUG: true
+    outputs:
+      version: ${{ steps.get_version.outputs.version }}
+      body: ${{ steps.get_version.outputs.body }}
+    steps:
+      - name: Get latest release
+        id: get_release
+        run: |
+          # 使用 GitHub API 获取最新发布的版本信息
+          latest_release=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" https://api.github.com/repos/wailsapp/wails/releases/latest)
+          version=$(echo "$latest_release" | jq -r '.tag_name')
+          echo "::set-output name=version::$version"
+
+  jobs_macos:
+    name: Build for macOS # 说明
+    needs: jobs_version # 依赖 jobs_version
+    runs-on: macos-latest # 运行环境
+    env:
+      version: ${{ needs.jobs_version.outputs.version }}
+      ACTIONS_RUNNER_DEBUG: true
+      ACTIONS_STEP_DEBUG: true
+    steps:
+      - name: Set up Go
+        uses: actions/setup-go@v4
+        with:
+          go-version: '^1.21.0'
+          cache-dependency-path: |
+            **/go.sum
+            **/go.mod
+            go-version-file: 'go.mod'
+      - run: go version
+      - name: Checkout pastePlus
+        uses: actions/checkout@v3
+      - name: 拉取并安装 wails v3
+        run: |
+          cd ..
+          git clone --branch v3-alpha https://github.com/wailsapp/wails.git
+          cd wails/v3/cmd/wails3
+          go install
+          wails3
+      - name: 编译
+        run: |
+          wails3 task package:darwin
+      - name: 查看编译的文件保存
+        run: |
+          pwd
+          ls -l
+          mkdir -p /tmp/artifacts
+          cp -r bin/PastePlus.app /tmp/artifacts/PastePlus.app
+          cp -r dmg.sh /tmp/artifacts/dmg.sh
+          chmod +x /tmp/artifacts/PastePlus.app/Contents/MacOS/PastePlus
+      - name: 创建压缩包
+        run: |
+          cd /tmp/artifacts/
+          chmod +x dmg.sh
+          ./dmg.sh
+          zip -r ./PastePlus.zip ./PastePlus.app
+      - name: 上传产物
+        uses: actions/upload-artifact@v3
+        with:
+          name: macos
+          path: |
+            /tmp/artifacts/*.zip
+            /tmp/artifacts/*.dmg
+
+          #  jobs_windows:
+          #    name: Build for windows # 说明
+          #    needs: jobs_version # 依赖 jobs_version
+          #    runs-on: windows-latest # 运行环境
+          #    env:
+          #      version: ${{ needs.jobs_version.outputs.version }}
+          #      ACTIONS_RUNNER_DEBUG: true
+          #      ACTIONS_STEP_DEBUG: true
+          #    steps:
+          #      - name: Set up Go
+          #        uses: actions/setup-go@v4
+          #        with:
+          #          go-version: '^1.21.0'
+          #          cache-dependency-path: |
+          #            **/go.sum
+          #            **/go.mod
+          #            go-version-file: 'go.mod'
+          #      - run: go version
+          #      - name: Set up MSYS2
+          #        uses: msys2/setup-msys2@v2
+          #        with:
+          #          msystem: MINGW64
+          #          update: true
+          #          install: mingw-w64-x86_64-toolchain
+          #      - name: Add mingw to PATH
+          #        run: echo "PATH=$PATH;C:\mingw64\bin" >> $GITHUB_ENV
+          #      - name: Checkout pastePlus
+          #        uses: actions/checkout@v3
+          #      - name: 拉取并安装 wails v3
+          #        run: |
+          #          cd ..
+          #          git clone --branch v3-alpha https://github.com/wailsapp/wails.git
+          #          cd wails/v3/cmd/wails3
+          #          go install
+          #          wails3
+          #      - name: 编译
+          #        run: |
+          #          wails3 task package:windows
+          #      - name: 查看编译的文件保存
+          #        run: |
+          #          pwd
+          #          ls -l
+
+
+
+  jobs_release: #发布软件
+    needs: [ jobs_version,jobs_macos ] # 依赖 jobs_version
+    name: 发布版本
+    runs-on: ubuntu-latest
+    env:
+      version: ${{ needs.jobs_version.outputs.version }}
+      body: ${{ needs.jobs_version.outputs.body }}
+    steps:
+      - name: 下载产物
+        id: download
+        uses: actions/download-artifact@v3
+        with:
+          path: ./
+      - name: 获取最后一个版本号
+        id: get_last_version
+        run: |
+          url="https://api.github.com/repos/${{ github.repository }}/releases/latest"
+          tag_name=$(curl -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" ${url} | jq -r '.tag_name')
+          body=$(curl -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" ${url} | jq -r '.body')
+          echo "::set-output name=tag_name::${tag_name}"
+          echo "::set-output name=body::${body}"
+      - name: 查看文件并重命名
+        run: |
+          cd macos
+          ls -l
+          mv PastePlus-.dmg PastePlus-${{steps.get_last_version.outputs.tag_name}}-darwin_universal.dmg
+      - name: 读入环境信息
+        run: |
+          echo ${{ format('version {0}', env.version ) }}
+          echo ${{steps.download.outputs.download-path}}
+          ls -R
+      - run: |
+          echo ${{ steps.get_last_version.outputs.tag_name }}
+          echo ${{ steps.get_last_version.outputs.body }}
+      - name: 发布文件
+        uses: ncipollo/release-action@v1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          allowUpdates: true # 覆盖文件
+            #draft: true # 草稿 自己可见 版本号会保持一样 默认是自动发布 latest
+          #prerelease: true # 预发布 别人可以看到 版本号会继续加
+          tag: ${{ steps.get_last_version.outputs.tag_name }} # 版本号 v0.1.0
+          body: ${{ steps.get_last_version.outputs.body }}  # 输出的内容
+          artifacts: "macos/*.zip,macos/*.dmg"

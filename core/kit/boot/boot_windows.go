@@ -6,6 +6,7 @@ import (
 	"PastePlus/core/basic"
 	"PastePlus/core/basic/common"
 	"github.com/xingcxb/goKit/core/fileKit"
+	"go.uber.org/zap"
 	"golang.org/x/sys/windows/registry"
 	"path/filepath"
 )
