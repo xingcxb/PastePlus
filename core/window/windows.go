@@ -162,3 +162,38 @@ func SettingsWindow(app *application.App, url string) {
 	hook.WindowClose(settingsWindow)
 	return
 }
+
+// UpdateWindow 更新软件窗口
+/*
+ * @Description: 更新软件窗口
+ * @param app 应用程序
+ */
+func UpdateWindow(app *application.App) {
+	updateWindow := app.NewWebviewWindowWithOptions(application.WebviewWindowOptions{
+		Name: common.UpdateWindowName,
+		// todo 暂时只对mac进行优化
+		Mac: application.MacWindow{
+			DisableShadow:           false,
+			InvisibleTitleBarHeight: 50,
+			TitleBar: application.MacTitleBar{
+				AppearsTransparent:   false,
+				Hide:                 false,
+				HideTitle:            true,
+				FullSizeContent:      true,
+				UseToolbar:           false,
+				HideToolbarSeparator: true,
+			},
+		},
+		DisableResize: true,                   // 禁止窗口缩放
+		URL:           common.UpdateWindowUrl, // 更新窗口内容
+		Width:         600,                    // 设置宽度
+		Height:        500,                    // 设置高度
+
+	})
+	// 设置窗口位置居中
+	updateWindow.Center()
+	// 设置为显示聚焦
+	updateWindow.Show().Focus()
+	// 窗口关闭时关闭窗口
+	hook.WindowClose(updateWindow)
+}
