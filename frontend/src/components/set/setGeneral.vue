@@ -7,10 +7,10 @@
       justify="end"
       labelAlign="right">
     <a-form-item label="启动">
-      <a-checkbox v-model:checked="bootUp" @change="handleBootUp" class="formStyle">开机后启动 PastePlus</a-checkbox>
+      <a-checkbox v-model="bootUp" @change="handleBootUp" class="formStyle">开机后启动 PastePlus</a-checkbox>
     </a-form-item>
     <a-form-item label="集成">
-      <a-checkbox v-model:checked="pasteText" class="formStyle">粘贴为纯文本</a-checkbox>
+      <a-checkbox v-model="pasteText" class="formStyle">粘贴为纯文本</a-checkbox>
     </a-form-item>
     <a-form-item label="其它">
       <a-checkbox style="cursor:default" v-model:checked="sound" disabled class="formStyle">启用音效</a-checkbox>
@@ -34,7 +34,7 @@
     </a-col>
   </a-row>
   <a-row style="margin-top: 30px">
-    <a-col :offset="4">赞助商：</a-col>
+    <a-col :offset="4">友联：</a-col>
     <a-col>
       <a href="https://xingcxb.com?from=PastePlus">不器小窝</a>
     </a-col>
@@ -97,10 +97,13 @@ function cleanAllPasteHistory(){
 
 // 加载配置
 function loadPasteConfig(){
+  console.log("========>loadPasteConfig")
   wails.Events.Emit({name: "loadPasteConfigToCore"})
   wails.Events.On("loadPasteConfigToFrontend", (data) => {
-    console.log(data.data)
+    console.log("========>",data.data)
+    console.log("========>bootUp",data.data.bootUp)
     bootUp.value = data.data.bootUp
+    console.log("----->",bootUp.value)
     sound.value = data.data.sound
     historyCapacity.value = data.data.historyCapacity
     switch (data.data.historyCapacity){
