@@ -19,9 +19,13 @@ import (
 	"runtime"
 )
 
+type CustomApp struct {
+	App *application.App
+}
+
 // LoadPasteConfig 加载配置文件
-func LoadPasteConfig(app *application.App) {
-	app.Events.On(common.EventsHandLoadPasteConfigToCore, func(e *application.WailsEvent) {
+func (a *CustomApp) LoadPasteConfig() {
+	a.App.Events.On(common.EventsHandLoadPasteConfigToCore, func(e *application.WailsEvent) {
 		// 获取配置信息
 		configs, err := db.FindAllConfig()
 		if err != nil {
@@ -33,7 +37,7 @@ func LoadPasteConfig(app *application.App) {
 		}
 		common.Logger.Info("加载配置文件", zap.String("configData", fmt.Sprintf("%v", configData)))
 		//marshal, _ := json.Marshal(configs)
-		app.Events.Emit(&application.WailsEvent{
+		a.App.Events.Emit(&application.WailsEvent{
 			Name: common.EventsHandLoadPasteConfigToFrontend,
 			Data: configData,
 		})
@@ -182,6 +186,10 @@ func HandleCardDoubleClick(app *application.App, window *application.WebviewWind
 			app.Events.Off(common.EventsFindPasteHistoryToCore)
 		}
 	})
+}
+
+func HandOpenUpdate() {
+
 }
 
 // formatContent 格式化输出数据

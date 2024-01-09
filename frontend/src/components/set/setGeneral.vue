@@ -97,13 +97,9 @@ function cleanAllPasteHistory(){
 
 // 加载配置
 function loadPasteConfig(){
-  console.log("========>loadPasteConfig")
   wails.Events.Emit({name: "loadPasteConfigToCore"})
   wails.Events.On("loadPasteConfigToFrontend", (data) => {
-    console.log("========>",data.data)
-    console.log("========>bootUp",data.data.bootUp)
     bootUp.value = data.data.bootUp
-    console.log("----->",bootUp.value)
     sound.value = data.data.sound
     historyCapacity.value = data.data.historyCapacity
     switch (data.data.historyCapacity){

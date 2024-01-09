@@ -45,6 +45,12 @@ func TestPath(t *testing.T) {
 	kit.InitLog()
 }
 
+func TestReplace(t *testing.T) {
+	item := "PastePlus\n"
+	item = strings.ReplaceAll(item, "\n", "")
+	fmt.Println(item)
+}
+
 func TestLogFile(t *testing.T) {
 	kit.InitLog()
 	common.Logger.Info("测试日志")

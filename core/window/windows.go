@@ -145,12 +145,13 @@ func SettingsWindow(app *application.App, url string) {
 		Height:        500,  // 设置高度
 	})
 	// 绑定自定义事件
+	customEventsApp := &customEvents.CustomApp{App: app}
 	// 绑定设置程序自动启动
 	customEvents.SetBootUp(app)
 	// 绑定清理粘贴板数据
 	customEvents.HandleCleanAllHistoryData(app)
 	// 绑定加载配置文件
-	customEvents.LoadPasteConfig(app)
+	customEventsApp.LoadPasteConfig()
 
 	// 设置窗口位置居中
 	settingsWindow.Center()
@@ -176,7 +177,7 @@ func UpdateWindow(app *application.App) {
 			DisableShadow:           false,
 			InvisibleTitleBarHeight: 50,
 			TitleBar: application.MacTitleBar{
-				AppearsTransparent:   false,
+				AppearsTransparent:   true,
 				Hide:                 false,
 				HideTitle:            true,
 				FullSizeContent:      true,
@@ -186,8 +187,8 @@ func UpdateWindow(app *application.App) {
 		},
 		DisableResize: true,                   // 禁止窗口缩放
 		URL:           common.UpdateWindowUrl, // 更新窗口内容
-		Width:         600,                    // 设置宽度
-		Height:        500,                    // 设置高度
+		Width:         620,                    // 设置宽度
+		Height:        300,                    // 设置高度
 
 	})
 	// 设置窗口位置居中

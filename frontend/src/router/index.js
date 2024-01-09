@@ -35,6 +35,12 @@ const routes = [
         path: "/home",
         name: "Home",
         component: () => import("../components/home/home.vue"),
+    },
+    {
+        // update页面
+        path: "/update",
+        name: "Update",
+        component: () => import("../components/update/update.vue"),
     }
 ]
 

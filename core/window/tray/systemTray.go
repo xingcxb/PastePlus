@@ -4,7 +4,6 @@ package tray
 import (
 	"PastePlus/core/basic"
 	"PastePlus/core/basic/common"
-	"PastePlus/core/kit"
 	"PastePlus/core/window"
 	"github.com/pkg/browser"
 	"github.com/wailsapp/wails/v3/pkg/application"
@@ -38,7 +37,8 @@ func CreateSysTray(app *application.App) *application.Menu {
 		browser.OpenURL(basic.AppGithubIssues)
 	})
 	subMenu.Add("检查更新...").OnClick(func(ctx *application.Context) {
-		kit.UpdateAppVersion()
+		//kit.UpdateAppVersion()
+		window.UpdateWindow(app)
 	})
 	// 设置分割线
 	trayMenu.AddSeparator()
