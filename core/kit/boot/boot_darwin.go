@@ -5,6 +5,7 @@ package boot
 import (
 	"PastePlus/core/basic"
 	"PastePlus/core/basic/common"
+	"PastePlus/core/logic"
 	"errors"
 	"fmt"
 	"go.uber.org/zap"
@@ -64,6 +65,7 @@ end tell
 		common.Logger.Error("设置开机启动失败", zap.Error(err))
 		return false, err
 	}
+	logic.HandConfigValue(common.ConfigKeyBootUp, "true")
 	return true, nil
 }
 

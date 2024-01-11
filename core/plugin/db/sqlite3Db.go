@@ -84,15 +84,15 @@ func basicConfigInit(sqlite3Db *sql.DB) error {
 	// 初始化配置表
 	sqlStmt := "INSERT INTO pasteConfig(key, value) VALUES(?, ?)"
 	// 设置启动状态为false
-	_, err := sqlite3Db.Exec(sqlStmt, "bootUp", "false")
+	_, err := sqlite3Db.Exec(sqlStmt, common.ConfigKeyBootUp, "false")
 	if err != nil {
 		return err
 	}
-	_, err = sqlite3Db.Exec(sqlStmt, "sound", "false")
+	_, err = sqlite3Db.Exec(sqlStmt, common.ConfigKeySound, "false")
 	if err != nil {
 		return err
 	}
-	_, err = sqlite3Db.Exec(sqlStmt, "historyCapacity", "周")
+	_, err = sqlite3Db.Exec(sqlStmt, common.ConfigKeyHistoryCapacity, "周")
 	if err != nil {
 		return err
 	}
@@ -101,7 +101,24 @@ func basicConfigInit(sqlite3Db *sql.DB) error {
 
 // UpConfig 更新配置信息
 func UpConfig(config common.PasteConfig) bool {
-
+	sqlStm := "UPDATE pasteConfig SET value = ? WHERE id = ?"
+	exec, err := sqlite3Db.Exec(sqlStm, config.Value, config.Id)
+	if err != nil {
+		common.Logger.Error("更新配置信息失败", zap.Error(err))
+		return false
+	}
+	affected, err := exec.RowsAffected()
+	if err != nil {
+		common.Logger.Error("更新配置信息失败", zap.Error(err))
+		return false
+	}
+	if affected > 1 {
+		common.Logger.Error("更新配置信息条数错误", zap.Error(err))
+		return true
+	}
+	if affected == 1 {
+		return true
+	}
 	return false
 }
 

@@ -7,7 +7,7 @@
       justify="end"
       labelAlign="right">
     <a-form-item label="启动">
-      <a-checkbox v-model="bootUp" @change="handleBootUp" class="formStyle">开机后启动 PastePlus</a-checkbox>
+      <a-checkbox v-model:checked="bootUp" @change="handleBootUp" class="formStyle">11开机后启动 PastePlus</a-checkbox>
     </a-form-item>
     <a-form-item label="集成">
       <a-checkbox v-model="pasteText" class="formStyle">粘贴为纯文本</a-checkbox>
@@ -34,14 +34,14 @@
     </a-col>
   </a-row>
   <a-row style="margin-top: 30px">
-    <a-col :offset="4">友联：</a-col>
+    <a-col :offset="4">友链：</a-col>
     <a-col>
       <a href="https://xingcxb.com?from=PastePlus">不器小窝</a>
     </a-col>
   </a-row>
 </template>
 <script setup>
-import {onMounted, ref} from 'vue';
+import {nextTick, onMounted, ref} from 'vue';
 
 // 是否开机启动
 let bootUp = ref(false);
@@ -66,7 +66,7 @@ const marks = {
 // 限制滑块刻度选择
 function handleSliderChange(value) {
   sliderValue.value = parseInt(value);
-  switch (value){
+  switch (value) {
     case 0:
       historyCapacity.value = "天";
       break;
@@ -91,18 +91,22 @@ function handleBootUp(value) {
 }
 
 // 清除所有记录
-function cleanAllPasteHistory(){
+function cleanAllPasteHistory() {
   wails.Events.Emit({name: "cleanAllPasteHistoryToCore"})
 }
 
 // 加载配置
-function loadPasteConfig(){
+function loadPasteConfig() {
   wails.Events.Emit({name: "loadPasteConfigToCore"})
   wails.Events.On("loadPasteConfigToFrontend", (data) => {
-    bootUp.value = data.data.bootUp
-    sound.value = data.data.sound
+    bootUp.value = (data.data.bootUp === "true")
+    sound.value = (data.data.sound === "true")
+    menuIcon.value = (data.data.menuIcon === "true")
+    console.log("---->", data.data)
+    console.log("---->", data.data.bootUp)
+    console.log("====>", bootUp.value)
     historyCapacity.value = data.data.historyCapacity
-    switch (data.data.historyCapacity){
+    switch (data.data.historyCapacity) {
       case "天":
         sliderValue.value = 0;
         break;
@@ -120,7 +124,7 @@ function loadPasteConfig(){
 }
 
 // 页面打开时监听数据
-onMounted(()=>{
+onMounted(() => {
   loadPasteConfig()
 })
 

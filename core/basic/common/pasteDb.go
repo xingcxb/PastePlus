@@ -1,6 +1,13 @@
 // Package common 剪贴板数据库结构体
 package common
 
+const (
+	ConfigKeyBootUp          = "bootUp"          // ConfigKeyBootUp 开机启动配置键
+	ConfigKeySound           = "sound"           // ConfigKeySound 声音配置键
+	ConfigKeyMenuIcon        = "menuIcon"        // ConfigKeyMenuIcon 菜单栏图标配置键
+	ConfigKeyHistoryCapacity = "historyCapacity" // ConfigKeyHistoryCapacity 历史记录容量配置键
+)
+
 // PasteHistoryGo 剪贴板历史记录结构体Go使用
 type PasteHistoryGo struct {
 	Id        int64  `json:"id"`         // ID 历史记录ID
