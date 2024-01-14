@@ -20,7 +20,6 @@ const launchctl = "/bin/launchctl"
 func SetAppBootUp() (bool, error) {
 	// 获取运行程序的位置
 	path, err := os.Executable()
-	common.Logger.Info("获取运行程序的位置", zap.String("path:", path))
 	if err != nil {
 		return false, err
 	}
@@ -34,10 +33,8 @@ func SetAppBootUp() (bool, error) {
 		return false, errors.New("未找到PastePlus.app的位置")
 	}
 	appPath += "/" + basic.AppName + ".app"
-	common.Logger.Info("获取PastePlus.app的位置", zap.String("appPath:", appPath))
 	// 检查是否已添加到开机启动项
 	status, err := checkStartupStatus()
-	common.Logger.Info("检查是否已添加到开机启动项", zap.Bool("status:", status))
 	if err != nil {
 		return false, err
 	}
@@ -84,7 +81,9 @@ end tell
 		common.Logger.Error("取消开机启动失败", zap.Error(err))
 		return false, err
 	}
-	return true, err
+	isOk := logic.HandConfigValue(common.ConfigKeyBootUp, "false")
+	common.Logger.Info("see change db status", zap.Bool("isOk:", isOk))
+	return true, nil
 }
 
 // 检查应用程序是否已添加到开机启动项
@@ -104,8 +103,6 @@ end tell
 	loginItems := strings.Split(string(output), ", ")
 	for _, item := range loginItems {
 		item = strings.ReplaceAll(item, "\n", "")
-		common.Logger.Info("122465", zap.String("item:", item))
-		common.Logger.Info("检查开机启动2", zap.String("item:", item))
 		if item == basic.AppName {
 			return true, nil
 		}

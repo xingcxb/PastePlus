@@ -7,14 +7,16 @@
       justify="end"
       labelAlign="right">
     <a-form-item label="启动">
-      <a-checkbox v-model:checked="bootUp" @change="handleBootUp" class="formStyle">11开机后启动 PastePlus</a-checkbox>
+      <a-checkbox v-model:checked="bootUp" @change="handleBootUp" class="formStyle">开机后启动 PastePlus
+      </a-checkbox>
     </a-form-item>
     <a-form-item label="集成">
       <a-checkbox v-model="pasteText" class="formStyle">粘贴为纯文本</a-checkbox>
     </a-form-item>
     <a-form-item label="其它">
       <a-checkbox style="cursor:default" v-model:checked="sound" disabled class="formStyle">启用音效</a-checkbox>
-      <a-checkbox style="cursor: default" v-model:checked="menuIcon" disabled class="formStyle">在菜单栏显示图标</a-checkbox>
+      <a-checkbox style="cursor: default" v-model:checked="menuIcon" disabled class="formStyle">在菜单栏显示图标
+      </a-checkbox>
     </a-form-item>
     <a-form-item label="存储时长">
       <a-slider
@@ -86,7 +88,9 @@ function handleSliderChange(value) {
 function handleBootUp(value) {
   wails.Events.Emit({name: "handleBootUpToCore", Data: value})
   wails.Events.On("handleBootUpToFrontend", (data) => {
-    bootUp.value = data.data
+    if (!data.data) {
+      bootUp.value = !bootUp.value
+    }
   })
 }
 
@@ -102,9 +106,6 @@ function loadPasteConfig() {
     bootUp.value = (data.data.bootUp === "true")
     sound.value = (data.data.sound === "true")
     menuIcon.value = (data.data.menuIcon === "true")
-    console.log("---->", data.data)
-    console.log("---->", data.data.bootUp)
-    console.log("====>", bootUp.value)
     historyCapacity.value = data.data.historyCapacity
     switch (data.data.historyCapacity) {
       case "天":

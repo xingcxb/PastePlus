@@ -71,8 +71,6 @@ func SetBootUp(app *application.App) {
 		if err != nil {
 			common.Logger.Error("设置开机启动失败", zap.Error(err))
 			dialogKit.PackageTipsDialog(dialogKit.Warning, "错误", "设置开机启动失败")
-		} else {
-			dialogKit.PackageTipsDialog(dialogKit.Info, "成功", "设置开机启动成功")
 		}
 	})
 }
