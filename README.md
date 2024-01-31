@@ -17,7 +17,9 @@
 
 ## 待处理问题
 
-- [ ] 获取`pid`的时，如果没有激活过上一个应用会导致`panic`
+- [x] 获取`pid`的时，如果没有激活过上一个应用会导致`panic`
+- [ ] 打包成程序后无法全局激活快捷键
+- [ ] `GitHub Action` 无法打包 `Windows` 应用程序
 
 ## 截图
 
@@ -35,15 +37,9 @@
 
   `wails wails3 task package:linux`
 
-## 安装
+## `wials v3` 遇到的一些问题笔记
 
-### Windows
-
-下载`exe`文件，双击运行即可。
-
-### MacOS
-
-下载`dmg`文件，双击运行即可。
+[Wails经验 | 不器小窝](https://xingcxb.com/language/go/028676/)
 
 
 ## 使用
