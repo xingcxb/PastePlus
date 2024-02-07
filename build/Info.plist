@@ -14,7 +14,7 @@
         <key>CFBundleGetInfoString</key>
         <string>(c) 2023 </string>
         <key>CFBundleShortVersionString</key>
-        <string>0.0.1</string>
+        <string>v0.0.1</string>
         <key>CFBundleIconFile</key>
         <string>icons</string>
         <key>LSMinimumSystemVersion</key>

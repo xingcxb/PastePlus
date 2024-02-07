@@ -38,7 +38,7 @@
   <a-row style="margin-top: 30px">
     <a-col :offset="4">友链：</a-col>
     <a-col>
-      <a href="https://xingcxb.com?from=PastePlus">不器小窝</a>
+      <span onclick="openBrowser('https://xingcxb.com')" class="link">不器小窝</span>
     </a-col>
   </a-row>
 </template>
@@ -124,6 +124,11 @@ function loadPasteConfig() {
   })
 }
 
+// 浏览器打开链接
+function openBrowser(site) {
+  window.open(site);
+}
+
 // 页面打开时监听数据
 onMounted(() => {
   loadPasteConfig()
@@ -133,5 +138,10 @@ onMounted(() => {
 <style scoped>
 .formStyle {
   width: 100%
+}
+.link{
+  color: #5562f9;
+  user-select: none;
+  cursor: pointer;
 }
 </style>
