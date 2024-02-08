@@ -7,6 +7,7 @@ import (
 	hook "github.com/robotn/gohook"
 	"github.com/wailsapp/wails/v3/pkg/application"
 	"runtime"
+	"time"
 )
 
 var (
@@ -28,9 +29,9 @@ func BindingGlobalHotkey(app *application.App) {
 	})
 	HotKeysCVHook = hook.Start()
 	go func() {
-		//for {
-		<-hook.Process(HotKeysCVHook)
-		//time.Sleep(100 * time.Millisecond)
-		//}
+		for {
+			<-hook.Process(HotKeysCVHook)
+			time.Sleep(100 * time.Millisecond)
+		}
 	}()
 }
